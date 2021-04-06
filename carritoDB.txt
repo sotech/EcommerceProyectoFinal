@@ -1,0 +1,1 @@
+{"id":10,"timestamp":1617747750524,"productos":[{"id":2,"timestamp":1617318838118,"nombre":"manzana","descripcion":"manzana del arbol de verduras","codigo":32,"foto":"manzana.png","precio":15,"stock":20},{"id":4,"timestamp":1617318839905,"nombre":"manzana","descripcion":"manzana del arbol de verduras","codigo":32,"foto":"manzana.png","precio":15,"stock":20}]}

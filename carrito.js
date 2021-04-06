@@ -17,9 +17,18 @@ class Carrito {
     obtenerProductos(){
         let lista = "";
         this.productos.forEach(producto => {
-            lista += producto + "\n";
+            lista += JSON.stringify(producto) + "\n";
         });
         return lista;
+    }
+
+    borrarProducto(_id){
+        let indexProducto = this.productos.findIndex(p => p.id == _id);
+        if(indexProducto >= 0){
+            this.productos.splice(indexProducto,1);
+        }else{
+            console.log("Error al buscar producto con id: " + _id);
+        }
     }
 }
 

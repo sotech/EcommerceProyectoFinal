@@ -114,18 +114,56 @@ app.use('/carrito', routerCarrito);
 
 routerCarrito.get('/listar/:id?', (req, res) => {
     if(req.params.id){
-        res.status(200).send("Listar producto del carrito con id: " + req.params.id);
+        carritoDB.leer().then(carrito => {
+            if (carrito){
+                //Buscar producto del carrito
+                let productoArray = carrito.productos.filter(p => p.id == req.params.id);
+                if(productoArray.length > 0){
+                    let producto = JSON.stringify(productoArray[0]);
+                    res.status(200).send("Listar producto del carrito con id: " + producto);
+                }else{
+                    res.status(400).send("No se encontro el producto del carrito con id: " + req.params.id);
+                }
+            }                
+        })
     }else{
-        res.status(200).send("Listado de todos los productos del carrito");
+        carritoDB.leer().then((contenido) => {
+            if(contenido){
+                carrito.inicializarProductos(contenido.productos);
+                let productosDelCarrito = carrito.obtenerProductos();
+                res.status(200).send("Productos del carrito: " + productosDelCarrito);
+            }
+        });
     }
 });
 
 routerCarrito.post('/agregar/:id_producto', (req, res) => {
-    res.status(200).send("Agregar al carrito el producto con id: " + req.params.id_producto);
+    //Cargar productos
+    productosDB.leer().then(contenido => {
+        if(contenido){
+            productos = contenido;
+            //Buscar producto con id;
+            let productoBuscadoArray = productos.filter(p => p.id == req.params.id_producto);
+            if(productoBuscadoArray.length > 0){
+                let productoBuscado = productoBuscadoArray[0];
+                //Producto encontrado, agregar al carrito
+                carrito.agregarProducto(productoBuscado);
+                //Guardar carrito
+                carritoDB.guardar(carrito).then(() => {
+                    res.status(200).send("Agregado al carrito el producto con id: " + req.params.id_producto);                
+                })
+            }else{
+                res.status(400).send("No se encontro el producto con id: " + req.params.id_producto);
+            }
+        }
+    })
 });
 
 routerCarrito.delete('/borrar/:id', (req, res) => {
-    res.status(200).send("Borrar un producto del carrito con id: " + req.params.id);
+    carrito.borrarProducto(req.params.id);
+    carritoDB.guardar(carrito).then(() => {
+        res.status(200).send("Borrar un producto del carrito con id: " + req.params.id);        
+    })
 });
 
 app.get('/', (req, res) => {
