@@ -19,7 +19,7 @@ app.use('/carrito', routerCarrito);
 
 
 app.get('/', (req, res) => {
-    res.sendFile("public/main.html",{root:__dirname});
+    res.send("Servidor iniciado");
 });
 
 
