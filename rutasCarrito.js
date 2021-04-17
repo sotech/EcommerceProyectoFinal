@@ -6,6 +6,8 @@ const { Database } = require('./databasetext');
 let carritoDB = new Database(__dirname + "/carritoDB.txt");
 let carrito = new Carrito(Math.floor(Math.random() * 100));
 
+let esAdministrador = true;
+
 routerCarrito.get('/listar/:id?', (req, res) => {
     if (req.params.id) {
         carritoDB.leer().then(carrito => {
@@ -37,9 +39,9 @@ routerCarrito.get('/listar/:id?', (req, res) => {
 
 routerCarrito.post('/agregar/:id_producto', (req, res) => {
     //Cargar productos
-    productosDB.leer().then(contenido => {
+    carritoDB.leer().then(contenido => {
         if (contenido) {
-            productos = contenido;
+            productos = contenido.productos;
             //Buscar producto con id;
             let productoBuscadoArray = productos.filter(p => p.id == req.params.id_producto);
             if (productoBuscadoArray.length > 0) {

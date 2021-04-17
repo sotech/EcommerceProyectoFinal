@@ -6,6 +6,8 @@ const { Database } = require('./databasetext');
 let productosDB = new Database(__dirname + "/productosDB.txt");
 let productos = [];
 
+let esAdministrador = true;
+
 routerProductos.get('/listar/:id?', (req, res) => {
     if (req.params.id) {
         productosDB.leer().then((contenido) => {
@@ -62,6 +64,8 @@ routerProductos.put('/actualizar/:id', (req, res) => {
                 productos.splice(indexProducto, 1, nuevoProducto);
                 productosDB.guardar(productos);
                 res.status(200).json(nuevoProducto);
+            }else{
+                res.status(400).json({ error: `Producto con id ${req.params.id} no encontrado` });
             }
         })
     }
