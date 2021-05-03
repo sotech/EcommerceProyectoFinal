@@ -1,9 +1,9 @@
-const {config} = require('../config/sqlite3Config');
+const { config } = require('../config/mariadbConfig');
 const knex = require('knex')(config);
 
 class DB_SQL {
 
-    constructor(){
+    constructor() {
         knex.schema.hasTable('productos').then((exists) => {
             if (!exists) {
                 knex.schema.createTable('productos', (table) => {
@@ -16,20 +16,20 @@ class DB_SQL {
                     table.float('precio');
                     table.integer('stock');
                 })
-                    .then(() => { console.log("Tabla productos creada") })
+                    .then(() => { console.log("Tabla MariaDB productos creada") })
                     .catch((err) => { console.log("Error: " + err) })
                     .finally(() => {
                         knex.destroy();
                     })
-            }else{
-                console.log("Tabla SQLite productos ya creada");
+            } else {
+                console.log("Tabla MariaDB productos ya creada");
             }
         })
             .catch((err) => console.log("Error al buscar la tabla: " + err))
     }
     //CRUD
     ListarProducto(id) {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             knex.from('productos').select("*").where('id', "=", id)
                 .then((productos) => {
                     if (productos.length > 0) {
@@ -38,15 +38,15 @@ class DB_SQL {
                 })
                 .catch((err) => console.error("Ocurrio un error al buscar los productos por id: " + err))
         })
-        
+
     }
 
     ListarProductos() {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             knex.from('productos').select("*")
                 .then((productos) => res(productos))
                 .catch((err) => console.error("Ocurrio un error al buscar los productos por id: " + err))
-        })            
+        })
     }
 
     GuardarProducto(producto) {
@@ -54,12 +54,12 @@ class DB_SQL {
     }
 
     ActualizarProducto(id, producto) {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             knex.from('productos').where('id', id).update({ timestamp: Date.now(), nombre: producto.nombre, descripcion: producto.descripcion, codigo: producto.codigo, foto: producto.foto, precio: producto.precio, stock: producto.stock })
                 .then((resultado) => {
                     if (resultado == 1) {
-                        console.log("Actualizacion exitosa");                        
-                    }else{
+                        console.log("Actualizacion exitosa");
+                    } else {
                         console.log("No se encontro el producto a actualizar");
                     }
                     res(resultado);
@@ -67,12 +67,12 @@ class DB_SQL {
                 .catch(err => {
                     console.error("Ocurrio un error al actualizar el producto: " + err)
                 })
-        })      
+        })
     }
 
 
     BorrarProducto(id) {
-        return new Promise((res,rej) => {
+        return new Promise((res, rej) => {
             knex('productos').where('id', "=", id).del()
                 .then((eliminado) => {
                     if (eliminado == 1) {
