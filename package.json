@@ -11,7 +11,10 @@
   "author": "German Sommariva",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "knex": "^0.95.4",
+    "mysql": "^2.18.1",
+    "sqlite3": "^5.0.2"
   },
   "engines": {
     "node": ">=14.0.0",
