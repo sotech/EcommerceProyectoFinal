@@ -1,22 +1,23 @@
 const fs = require('fs');
 const path = require('path');
-class DB_FS {
+
+class DBProductos_FS {
     constructor(nombreDB){        
         this.fileLocation = path.join(__dirname, "..", "/dbs/", nombreDB + ".txt");        
     }
 
-    async InicializarDB(){
+    async InicializarDB() {
         //Crear por primera vez si es que no existe
         try {
             await fs.promises.readFile(this.fileLocation);
         } catch (e) {
-            console.error("Error al leer el archivo por primera vez: " + e);            
+            console.error("Error al leer el archivo productos por primera vez: " + e);            
             let productos = [];
             try {
-                console.log("Creando archivo");
+                console.log("Creando archivo productos");
                 await fs.promises.writeFile(this.fileLocation, JSON.stringify(productos));
             } catch (e) {
-                console.error("Error al crear el archivo por primera vez: " + e);
+                console.error("Error al crear el archivo productos por primera vez: " + e);
             }
         }
     }
@@ -117,4 +118,4 @@ class DB_FS {
     }
 }
 
-module.exports = { DB_FS };
+module.exports = { DBProductos_FS };

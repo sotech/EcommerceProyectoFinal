@@ -1,9 +1,9 @@
 const express = require('express');
 const routerProductos_mongoLocal = express.Router();
 const { Producto } = require('../models/producto');
-const db_mongoLocal = require('../persistencias/db_mongo');
+const db_mongoLocal = require('../persistencias/dbproductos_mongo');
 
-const database = new db_mongoLocal.DB_MongoLocal();
+const database = new db_mongoLocal.DBProductos_MongoLocal();
 
 routerProductos_mongoLocal.get("/productos/:id?", async (req, res) => {
     if (req.params.id) {

@@ -1,9 +1,9 @@
 const express = require('express');
 const routerProductos_sqlite = express.Router();
 const { Producto } = require('../models/producto');
-const db_sqlite = require('../persistencias/db_sqlite');
+const db_sqlite = require('../persistencias/dbproductos_sqlite');
 
-const database = new db_sqlite.DB_SQL();
+const database = new db_sqlite.DBProductos_SQL();
 
 routerProductos_sqlite.get("/productos/:id?", async (req, res) => {
     if (req.params.id) {

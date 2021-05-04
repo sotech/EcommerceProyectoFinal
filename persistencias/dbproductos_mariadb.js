@@ -1,7 +1,7 @@
 const { config } = require('../config/mariadbConfig');
 const knex = require('knex')(config);
 
-class DB_SQL {
+class DBProductos_SQL {
 
     constructor() {
         knex.schema.hasTable('productos').then((exists) => {
@@ -91,4 +91,4 @@ class DB_SQL {
     }
 }
 
-module.exports = { DB_SQL };
+module.exports = { DBProductos_SQL };

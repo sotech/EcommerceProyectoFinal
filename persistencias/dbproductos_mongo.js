@@ -2,7 +2,7 @@ const model = require('../config/mongoProductoModel.js');
 const mongoose = require('mongoose');
 const URL = "mongodb://localhost:27017/ecommerce";
 
-class DB_MongoLocal {
+class DBProductos_MongoLocal {
     constructor(){
         (async () => {
             try {
@@ -72,4 +72,4 @@ class DB_MongoLocal {
     }
 }
 
-module.exports = { DB_MongoLocal };
+module.exports = { DBProductos_MongoLocal };

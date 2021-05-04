@@ -1,9 +1,9 @@
 const express = require('express');
 const routerProductos_mariadb = express.Router();
 const { Producto } = require('../models/producto');
-const db_mariadb = require('../persistencias/db_mariadb');
+const db_mariadb = require('../persistencias/dbproductos_mariadb');
 
-const database = new db_mariadb.DB_SQL();
+const database = new db_mariadb.DBProductos_SQL();
 
 routerProductos_mariadb.get("/productos/:id?", async (req, res) => {
     if (req.params.id) {

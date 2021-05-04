@@ -1,9 +1,9 @@
 const express = require('express');
 const routerProductos_fs = express.Router();
 const { Producto } = require('../models/producto');
-const db_fs = require('../persistencias/db_fs');
+const db_fs = require('../persistencias/dbproductos_fs');
 
-const database = new db_fs.DB_FS("databaseProductos");
+const database = new db_fs.DBProductos_FS("databaseProductos");
 database.InicializarDB();
 
 routerProductos_fs.get("/productos/:id?",(req,res) => {
