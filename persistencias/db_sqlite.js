@@ -50,7 +50,11 @@ class DB_SQL {
     }
 
     GuardarProducto(producto) {
-        return knex('productos').insert(producto)
+        return new Promise((res, rej) => {
+            knex('productos').insert(producto)
+                .then(resultado => res(resultado))
+                .catch((err) => console.error("Ocurrio un error al guardar el producto: " + err))
+        })
     }
 
     ActualizarProducto(id, producto) {
