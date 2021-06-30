@@ -13,8 +13,26 @@ router.get('/listar/:id?', (req, res) => {
 
 router.post('/agregar', (req, res) => {
   if (admin) {
-    const producto = req.body;
-    res.status(200).json({ mensaje: `Ruta: agregar`, producto: producto });
+    const {nombre,descripcion,codigo,foto,precio,stock} = req.body;
+    const producto = productosController.GenerarProducto({
+      nombre:nombre,
+      timestamp:Date.now(),
+      descripcion:descripcion,
+      codigo:codigo,
+      foto:foto,
+      precio:precio,
+      stock:stock
+    });
+    console.log('Guardando producto');
+    producto.save((err,producto) => {
+      if(err){
+        console.log(`POST - 400 - Error al guardar el producto ${err}`);
+        res.status(400).json({error:'Ocurrio un error al guardar el producto'});
+      }else{
+        console.log(`POST - 200 - Producto guardado`);
+        res.status(200).json({ status: `OK`, producto: producto });
+      }
+    });
   } else {
     res.status(400).json({ error: 'No es un administrador' });
   }
