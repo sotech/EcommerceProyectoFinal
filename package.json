@@ -4,21 +4,18 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon server.js",
     "start": "node server.js"
   },
   "author": "German Sommariva",
   "license": "ISC",
-  "dependencies": {
-    "express": "^4.17.1",
-    "knex": "^0.95.4",
-    "mongoose": "^5.12.7",
-    "mysql": "^2.18.1",
-    "sqlite3": "^5.0.2"
-  },
   "engines": {
     "node": ">=14.0.0",
     "npm": ">=6.0.0"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.13.0",
+    "path": "^0.12.7"
   }
 }
