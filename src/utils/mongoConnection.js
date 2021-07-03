@@ -7,7 +7,7 @@ db.on('error', () => {
 });
 
 db.once('open', () => {
-  console.log('Conectado a MongoAtlas')
+  console.log('Conectado a EcommerceDatabase')
 });
 
 module.exports = db;
