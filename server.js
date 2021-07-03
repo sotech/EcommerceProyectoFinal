@@ -14,7 +14,6 @@ app.use('/productos', productosRoutes);
 app.use('/carrito', carritoRoutes);
 
 
-
 app.listen(port, () => {
     console.log(`Servidor corriendo en ` + port);   
 });

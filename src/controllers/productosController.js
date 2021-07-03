@@ -34,9 +34,9 @@ module.exports = {
   },
 
   agregarProducto: (req, res) => {
-    const { nombre, descripcion, codigo, foto, precio, stock } = req.body;
+    const { _id, nombre, descripcion, codigo, foto, precio, stock } = req.body;
     const producto = new Producto({
-      _id: 1,
+      _id: _id,
       nombre: nombre,
       timestamp: Date.now(),
       descripcion: descripcion,
