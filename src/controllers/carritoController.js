@@ -33,7 +33,6 @@ module.exports = {
           if (carrito) {
             res.status(200).json({ carrito: carrito });
           } else {
-            console.log(`GET - 404 - NOT FOUND`);
             res.status(404).json({ error: 'No hay un carrito creado' });
           }
         }
@@ -50,7 +49,6 @@ module.exports = {
       if (err) {
         res.status(400).json({ error: 'Ocurrio un error al crear el carrito', err: err });
       } else {
-        console.log(`POST - 201 - OK`);
         res.status(201).json({ carrito: carrito });
       }
     })
@@ -74,7 +72,6 @@ module.exports = {
                   if (err) {
                     res.status(400).json({ error: 'Ocurrio un error al guardar el nuevo carrito', err: err});
                   } else {
-                    console.log(`POST - 200 - OK`);
                     res.status(200).json({ carrito: carrito });
                   }
                 })

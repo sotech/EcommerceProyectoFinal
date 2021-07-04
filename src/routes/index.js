@@ -29,8 +29,11 @@ router.get('/fail', (req, res) => {
   res.render('fail');
 })
 
+router.get('/logout',(req,res)=>{
+  req.logout();
+  res.redirect('/');
+})
 router.get('/profile', isLoggedIn, (req, res) => {
-  console.log(req.user);
   res.render('profile',{user:req.user});
 });
 
