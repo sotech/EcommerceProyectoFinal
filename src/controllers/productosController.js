@@ -4,17 +4,13 @@ module.exports = {
   listarProducto: (req, res) => {
     const { id } = req.params;
     if (id) {
-      //1 producto
       Producto.findById(id, (err, producto) => {
         if (err) {
-          console.log(`GET - 400 - BAD REQUEST - Error: ${err}`);
-          res.status(400).json({ error: 'Ocurrio un error al buscar el producto' });
+          res.status(400).json({ error: 'Ocurrio un error al buscar el producto', err: err });
         } else {
           if (producto) {
-            console.log('GET - 200 - OK');
             res.status(200).json({ producto: producto });
           } else {
-            console.log('GET - 404 - NOT FOUND');
             res.status(404).json({ error: 'Producto no encontrado.' });
           }
         }
@@ -23,10 +19,8 @@ module.exports = {
       //Listar los productos
       Producto.find({}, (err, productos) => {
         if (err) {
-          console.log(`GET - 400 - - BAD REQUEST - Error: ${err}`);
-          res.status(400).json({ error: 'Ocurrio un error al buscar los productos' });
+          res.status(400).json({ error: 'Ocurrio un error al buscar los productos', err: err });
         } else {
-          console.log('GET - 200 - OK');
           res.status(200).json({ productos: productos });
         }
       })
@@ -47,11 +41,9 @@ module.exports = {
     });
     producto.save((err, producto) => {
       if (err) {
-        console.log(`POST - 400 - BAD REQUEST - Error: ${err}`);
-        res.status(400).json({ error: 'Ocurrio un error al guardar el producto' });
+        res.status(400).json({ error: 'Ocurrio un error al guardar el producto', err: err });
       } else {
-        console.log(`POST - 201 - OK`);
-        res.status(400).json({ status: 'OK', producto: producto });
+        res.status(201).json({ status: 'OK', producto: producto });
       }
     })
   },
@@ -70,14 +62,11 @@ module.exports = {
         stock:stock
       },{new:true},(err,productoNuevo) => {
         if(err){
-          console.log(`PUT - 400 - BAD REQUEST - Error: ${err}`);
-          res.status(400).json({error: 'Ocurrio un error al actualizar el producto'});
+          res.status(400).json({ error: 'Ocurrio un error al actualizar el producto', err: err});
         }else{
           if(productoNuevo){
-            console.log(`PUT - 200 - OK`);
             res.status(200).json({ producto: productoNuevo });
           }else{
-            console.log(`PUT - 404 - NOT FOUND`);
             res.status(404).json({ error: 'Producto no encontrado' });
           }
         }
@@ -88,14 +77,11 @@ module.exports = {
     const { id } = req.params;
     Producto.findByIdAndRemove(id,(err,productoRemovido) => {
       if(err){
-        console.log(`DELETE - 400 - BAD REQUEST - Error: ${err}`);
-        res.status(400).json({ error: 'Ocurrio un error al borrar el producto' });
+        res.status(400).json({ error: 'Ocurrio un error al borrar el producto', err: err });
       } else {
         if (productoRemovido) {
-          console.log(`DELETE - 200 - OK`);
           res.status(200).json({ productoRemovido: productoRemovido });
         } else {
-          console.log(`DELETE - 404 - NOT FOUND`);
           res.status(404).json({ error: 'Producto no encontrado' });
         }
       }
