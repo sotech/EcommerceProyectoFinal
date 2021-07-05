@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/userModel');
+const mailer = require('../utils/gmailer');
 
 passport.use('signup', new LocalStrategy({
   usernameField: 'email',
@@ -21,6 +22,7 @@ passport.use('signup', new LocalStrategy({
     newUser.fotoURL = req.body.fotoURL;
     console.log(newUser)
     await newUser.save();
+    mailer.newUserMail();
     done(null, newUser);
   }
 }));
