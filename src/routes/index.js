@@ -29,21 +29,34 @@ router.get('/fail', (req, res) => {
   res.render('fail');
 })
 
+router.get('/home',isLoggedIn, (req,res) => {
+  res.render('home');
+})
+
+router.get('/carrito', isLoggedIn, (req, res) => {
+  res.render('carrito');
+})
+
+router.get('/productos', isLoggedIn, (req, res) => {
+  res.render('productos');
+})
+
 router.get('/logout',(req,res)=>{
   req.logout();
   res.redirect('/');
 })
+
 router.get('/profile', isLoggedIn, (req, res) => {
   res.render('profile',{user:req.user});
-});
+})
 
 router.post('/signup', passport.authenticate('signup', {
-  successRedirect: '/success',
+  successRedirect: '/home',
   failureRedirect: '/fail'
 }));
 
 router.post('/login', passport.authenticate('login',{
-  successRedirect:'/profile',
+  successRedirect:'/home',
   failureRedirect:'/fail'
 }));
 
