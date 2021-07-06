@@ -1,47 +1,36 @@
 const Carrito = require('../models/carritoModel');
 const Producto = require('../models/productoModel');
+const mailer = require('../utils/gmailer');
+const twilio = require('../utils/twilio');
 
 module.exports = {
   listarCarrito: (req, res) => {
     const { id } = req.params;
-    if (id) {
-      Carrito.findById(1, (err, carrito) => {
-        if (err) {
-          res.status(400).json({ error: 'Ocurrio un error al obtener el carrito', err:err });
+    Carrito.findById(id, (err, carrito) => {
+      if (err) {
+        res.status(400).json({ error: 'Ocurrio un error al obtener el carrito', err: err });
+      } else {
+        if (carrito) {
+          res.status(200).json({ carrito: carrito });
         } else {
-          if (carrito) {
-            if(carrito.productos.length > 0){
-              const producto = carrito.productos.filter(p => p.id == id);
-              if (producto.length > 0) {
-                res.status(200).json({ producto: producto[0] });
-              }else{
-                res.status(404).json({ error: 'Producto no encontrado'});
-              }
-            }else{
-              res.status(404).json({ error: 'No hay productos' });
-            }
-          } else {
-            res.status(404).json({ error: 'No hay un carrito creado' });
-          }
+          res.status(404).json({ error: 'No hay un carrito creado' });
         }
-      })
-    } else {
-      Carrito.findById(1, (err, carrito) => {
-        if (err) {
-          res.status(400).json({ error: 'Ocurrio un error al obtener el carrito', err: err });
-        } else {
-          if (carrito) {
-            res.status(200).json({ carrito: carrito });
-          } else {
-            res.status(404).json({ error: 'No hay un carrito creado' });
-          }
-        }
-      })
-    }
+      }
+    })
   },
-  inicializarCarrito: (req,res) => {
+
+  submitCarrito: async(req,res) => {
+    const {id} = req.params;
+    const{nombre,email,telefono} = req.body;
+    const carrito = await Carrito.findOne({_id:id}).populate('productos');
+    mailer.pedidoCarritoMail(nombre,email,carrito.productos);
+    twilio.enviarWpp(`Nuevo pedido de ${nombre} - ${email}`);
+    twilio.enviarSMSPedidoRecibido(telefono);
+    res.status(200).json({estado:'Carrito submiteado',carrito:carrito});
+  },
+
+  inicializarCarrito: (req, res) => {
     const carritoNuevo = new Carrito({
-      _id: 1,
       timestamp: Date.now(),
       productos: []
     });
@@ -56,10 +45,11 @@ module.exports = {
 
   agregarProducto: (req, res) => {
     const { id_producto } = req.params;
-
-    Carrito.findById(1, (err, carrito) => {
+    const { id_carrito} = req.body;
+    console.log(req.body);
+    Carrito.findById(id_carrito, (err, carrito) => {
       if (err) {
-        res.status(400).json({ error: 'Ocurrio un error al buscar el carrito', err: err});
+        res.status(400).json({ error: 'Ocurrio un error al buscar el carrito', err: err });
       } else {
         if (carrito) {
           Producto.findById(id_producto, (err, producto) => {
@@ -70,7 +60,7 @@ module.exports = {
                 carrito.productos.push(producto);
                 carrito.save((err, carrito) => {
                   if (err) {
-                    res.status(400).json({ error: 'Ocurrio un error al guardar el nuevo carrito', err: err});
+                    res.status(400).json({ error: 'Ocurrio un error al guardar el nuevo carrito', err: err });
                   } else {
                     res.status(200).json({ carrito: carrito });
                   }
@@ -93,22 +83,22 @@ module.exports = {
       if (err) {
         res.status(400).json({ error: 'Ocurrio un error al buscar el carrito', err: err });
       } else {
-        if(carrito){
+        if (carrito) {
           const productosRestantes = carrito.productos.filter(p => p._id != id);
           const hayBorrado = productosRestantes.length < carrito.productos.length;
           carrito.productos = productosRestantes;
-          carrito.save((err,carrito) => {
-            if(err){
+          carrito.save((err, carrito) => {
+            if (err) {
               res.status(400).json({ error: 'Ocurrio un error al guardar el nuevo carrito', err: err });
-            }else{
-              if(hayBorrado){
+            } else {
+              if (hayBorrado) {
                 res.status(200).json({ carrito: carrito });
-              }else{
+              } else {
                 res.status(404).json({ error: 'Producto no encontrado' });
               }
             }
           })
-        }else{
+        } else {
           res.status(404).json({ error: 'No hay un carrito creado' });
         }
       }

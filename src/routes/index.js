@@ -34,11 +34,11 @@ router.get('/home',isLoggedIn, (req,res) => {
 })
 
 router.get('/carrito', isLoggedIn, (req, res) => {
-  res.render('carrito');
+  res.render('carrito',{user:req.user});
 })
 
 router.get('/productos', isLoggedIn, (req, res) => {
-  res.render('productos');
+  res.render('productos',{user:req.user});
 })
 
 router.get('/logout',(req,res)=>{

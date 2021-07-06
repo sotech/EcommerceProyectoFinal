@@ -1,1 +1,50 @@
 <h1>Productos</h1>
+<ul id="productos">
+
+</ul>
+<script>
+  function createNode(element) {
+      return document.createElement(element);
+    }
+
+    function append(parent, el) {
+      return parent.appendChild(el);
+    }
+
+    const ul = document.getElementById('productos');
+    const url = 'productos/listar';
+
+    fetch(url)
+      .then((resp) => resp.json())
+      .then((data) => {
+        let productos = data.productos;
+        console.log(productos);
+        return productos.map(function (producto) {
+          let li = createNode('li');
+          let button = createNode('button');
+          let span = createNode('span');
+          span.innerHTML = producto.nombre;
+          const carritoId = "<%= user.carrito %>";
+          console.log(carritoId);
+          button.onclick = async() => {
+            const data = JSON.stringify({ id_carrito: carritoId});
+            let response = await fetch(`carrito/agregar/${producto._id}`, {
+              method: 'POST',
+              headers:{ 'Content-Type': 'application/json'},
+              body: data
+            })
+              .then(response => response.json())
+              .then(data => {
+                console.log(data);
+              })
+          }
+          button.innerHTML= 'Agregar al carrito';
+          append(li,span);
+          append(li,button);
+          append(ul,li);
+        })
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+</script>

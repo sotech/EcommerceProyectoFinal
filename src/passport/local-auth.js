@@ -1,6 +1,7 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/userModel');
+const Carrito = require('../models/carritoModel');
 const mailer = require('../utils/gmailer');
 
 passport.use('signup', new LocalStrategy({
@@ -20,8 +21,10 @@ passport.use('signup', new LocalStrategy({
     newUser.edad = req.body.edad;
     newUser.telefono = req.body.telefono;
     newUser.fotoURL = req.body.fotoURL;
-    console.log(newUser)
-    await newUser.save();
+    const newCarrito = new Carrito();
+    const savedCarrito = await newCarrito.save();
+    newUser.carrito = savedCarrito;
+    await newUser.save()
     mailer.newUserMail();
     done(null, newUser);
   }

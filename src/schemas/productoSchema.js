@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
 
 const productoSchema = new mongoose.Schema({
-  _id:Number,
-  timestamp:String,
+  timestamp:{
+    type:String,
+    default:Date.now()
+  },
   nombre:String,
   descripcion:String,
   codigo:String,
