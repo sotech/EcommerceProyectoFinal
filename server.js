@@ -4,12 +4,17 @@ const path = require('path');
 const engine = require('ejs-mate');
 const morgan = require('morgan');
 const log4js = require("log4js");
+const http = require('http');
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
 const indexRoutes = require('./src/routes/index');
 const productosRoutes = require('./src/routes/productos');
 const carritoRoutes = require('./src/routes/carrito');
 const passport = require('passport');
 const session = require('express-session');
 const User = require('./src/models/userModel');
+const clusterConfig = '';//require('./src/config/clusterConfig');
+
 require('dotenv').config();
 require('./src/utils/mongoConnection');
 require('./src/passport/local-auth');
@@ -51,6 +56,33 @@ log4js.configure({
     }
 });
 
-app.listen(port, () => {
-    console.log(`Servidor corriendo en ` + port);   
-});
+if(clusterConfig == 'CLUSTER'){
+    console.log('Modo cluster');
+    if (cluster.isPrimary) {
+        console.log(`Primary ${process.pid} is running`);
+
+        // Fork workers.
+        for (let i = 0; i < numCPUs; i++) {
+            cluster.fork();
+        }
+
+        cluster.on('fork', (worker) => {
+            console.log('worker is dead:', worker.isDead());
+        });
+
+        cluster.on('exit', (worker, code, signal) => {
+            console.log('worker is dead:', worker.isDead());
+        });
+    } else {
+        // Workers can share any TCP connection. In this case, it is an HTTP server.
+        http.createServer((req, res) => {
+            res.writeHead(200);
+            res.end(`Current process\n ${process.pid}`);
+            process.kill(process.pid);
+        }).listen(port);
+    }
+}else{
+    app.listen(port, () => {
+        console.log(`Servidor corriendo en ` + port);
+    });
+}
