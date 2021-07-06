@@ -58,21 +58,14 @@ log4js.configure({
 
 if(clusterConfig == 'CLUSTER'){
     console.log('Modo cluster');
-    if (cluster.isPrimary) {
-        console.log(`Primary ${process.pid} is running`);
-
-        // Fork workers.
+    console.log('Iniciando servidor en modo CLUSTER');
+    if (cluster.isMaster) {
         for (let i = 0; i < numCPUs; i++) {
             cluster.fork();
         }
-
-        cluster.on('fork', (worker) => {
-            console.log('worker is dead:', worker.isDead());
-        });
-
         cluster.on('exit', (worker, code, signal) => {
-            console.log('worker is dead:', worker.isDead());
-        });
+            console.log(`Worker ${worker.process.pid} died`);
+        })
     } else {
         // Workers can share any TCP connection. In this case, it is an HTTP server.
         http.createServer((req, res) => {
