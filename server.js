@@ -27,11 +27,14 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use((req,res,next) => {
+    res.header('Access-Control-Allow-Origin','*');
+    next();
+})
 app.use(morgan('dev'));
 app.use('/', indexRoutes);
 app.use('/productos', productosRoutes);
 app.use('/carrito', carritoRoutes);
-
 app.listen(port, () => {
     console.log(`Servidor corriendo en ` + port);   
 });
