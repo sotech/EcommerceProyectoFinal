@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const engine = require('ejs-mate');
 const morgan = require('morgan');
+const log4js = require("log4js");
 const indexRoutes = require('./src/routes/index');
 const productosRoutes = require('./src/routes/productos');
 const carritoRoutes = require('./src/routes/carrito');
@@ -35,6 +36,21 @@ app.use(morgan('dev'));
 app.use('/', indexRoutes);
 app.use('/productos', productosRoutes);
 app.use('/carrito', carritoRoutes);
+
+//Log4js
+log4js.configure({
+    appenders: {
+        loggerConsola: { type: 'console' },
+        loggerWarn: { type: 'file', filename: 'logs/warn.log' },
+        loggerError: { type: 'file', filename: 'logs/error.log' },
+    },
+    categories: {
+        default: { appenders: ["loggerConsola"], level: 'info' },
+        warnings: { appenders: ["loggerWarn"], level: 'warn' },
+        errors: { appenders: ["loggerError"], level: 'error' },
+    }
+});
+
 app.listen(port, () => {
     console.log(`Servidor corriendo en ` + port);   
 });

@@ -1,5 +1,7 @@
 require('dotenv').config();
 const nodemailer = require('nodemailer');
+const info = require('log4js').getLogger();
+const errors = require('log4js').getLogger('errors');
 const gmailTransporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -18,9 +20,9 @@ const newUserMail = () => {
   
   gmailTransporter.sendMail(newUserOptions, (err, info) => {
     if (err) {
-      console.log(err);
+      errors.error(err);
     }
-    console.log(info);
+    (info);
   })
 }
 
@@ -38,9 +40,9 @@ const pedidoCarritoMail = (nombre,email,listaProductos) => {
   pedidoCarritoOptions.html = pedidoCarritoOptions.html + `</ul>`;  
   gmailTransporter.sendMail(pedidoCarritoOptions, (err, info) => {
     if (err) {
-      console.log(err);
+      errors.error(err);
     }
-    console.log(info);
+    info.info(info);
   })
 }
 module.exports = {newUserMail,pedidoCarritoMail};

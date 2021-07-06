@@ -3,6 +3,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const User = require('../models/userModel');
 const Carrito = require('../models/carritoModel');
 const mailer = require('../utils/gmailer');
+const warnings = require('log4js').getLogger('warnings');
 
 passport.use('signup', new LocalStrategy({
   usernameField: 'email',
@@ -11,7 +12,7 @@ passport.use('signup', new LocalStrategy({
 }, async (req, email, password, done) => {
   const user = await User.findOne({ 'email': email })
   if (user) {
-    console.log('Usuario ya existente');
+    warnings.warn('Usuario ya existente');
     return done(null, false);
   } else {
     const newUser = new User();
@@ -40,7 +41,7 @@ passport.use('login', new LocalStrategy({
     return done(null, false);
   }
   if (!user.comparePassword(password)) {
-    console.log('Contraseña incorrecta')
+    warnings.warn('Contraseña incorrecta')
     return done(null, false);
   }
   return done(null, user);

@@ -46,7 +46,6 @@ module.exports = {
   agregarProducto: (req, res) => {
     const { id_producto } = req.params;
     const { id_carrito} = req.body;
-    console.log(req.body);
     Carrito.findById(id_carrito, (err, carrito) => {
       if (err) {
         res.status(400).json({ error: 'Ocurrio un error al buscar el carrito', err: err });
