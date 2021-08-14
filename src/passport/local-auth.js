@@ -22,6 +22,7 @@ passport.use('signup', new LocalStrategy({
     newUser.edad = req.body.edad;
     newUser.telefono = req.body.telefono;
     newUser.fotoURL = req.body.fotoURL;
+    newUser.esAdmin = req.body.esAdmin || false;
     const newCarrito = new Carrito();
     const savedCarrito = await newCarrito.save();
     newUser.carrito = savedCarrito;

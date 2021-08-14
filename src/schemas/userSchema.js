@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   edad:Number,
   telefono:String,
   fotoURL:String,
+  esAdmin:Boolean,
   carrito:{
     type:mongoose.Schema.Types.ObjectId,
     ref:'Carrito'

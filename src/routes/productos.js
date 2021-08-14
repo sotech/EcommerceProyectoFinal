@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const admin = require('../config/adminConfig.js');
 const productosController = require('../controllers/productosController');
 
 router.get('/listar/:id?', productosController.listarProducto);

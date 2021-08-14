@@ -19,6 +19,7 @@
     "ejs-mate": "^3.0.0",
     "express": "^4.17.1",
     "express-session": "^1.17.2",
+    "knex": "^0.21.21",
     "log4js": "^6.3.0",
     "mongoose": "^5.13.0",
     "morgan": "^1.10.0",
@@ -26,6 +27,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
+    "sqlite3": "^5.0.2",
     "twilio": "^3.65.0"
   }
 }

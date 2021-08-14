@@ -1,9 +1,10 @@
+require('dotenv').config();
+require('./src/utils/logger');
 const express = require('express');
 const app = express();
 const path = require('path');
 const engine = require('ejs-mate');
 const morgan = require('morgan');
-const log4js = require("log4js");
 const http = require('http');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
@@ -12,11 +13,9 @@ const productosRoutes = require('./src/routes/productos');
 const carritoRoutes = require('./src/routes/carrito');
 const passport = require('passport');
 const session = require('express-session');
-const User = require('./src/models/userModel');
-const clusterConfig = '';//require('./src/config/clusterConfig');
+const clusterConfig = process.env.MODO_CLUSTER != 'NONE' ? process.env.MODO_CLUSTER : '' ;
+const info = require('log4js').getLogger();
 
-require('dotenv').config();
-require('./src/utils/mongoConnection');
 require('./src/passport/local-auth');
 const port = process.env.PORT || 8080;
 
@@ -42,19 +41,7 @@ app.use('/', indexRoutes);
 app.use('/productos', productosRoutes);
 app.use('/carrito', carritoRoutes);
 
-//Log4js
-log4js.configure({
-    appenders: {
-        loggerConsola: { type: 'console' },
-        loggerWarn: { type: 'file', filename: 'logs/warn.log' },
-        loggerError: { type: 'file', filename: 'logs/error.log' },
-    },
-    categories: {
-        default: { appenders: ["loggerConsola"], level: 'info' },
-        warnings: { appenders: ["loggerWarn"], level: 'warn' },
-        errors: { appenders: ["loggerError"], level: 'error' },
-    }
-});
+
 
 if(clusterConfig == 'CLUSTER'){
     console.log('Modo cluster');
@@ -76,6 +63,6 @@ if(clusterConfig == 'CLUSTER'){
     }
 }else{
     app.listen(port, () => {
-        console.log(`Servidor corriendo en ` + port);
+        info.info(`Servidor corriendo en ` + port);
     });
 }
