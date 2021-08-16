@@ -1,20 +1,18 @@
-const FactorySingleton = require('../persistencias/factorySingleton');
-
-const persistencia = FactorySingleton.getInstance().baseDatos;
+const productosAPI = require('../api/productosAPI');
 
 module.exports = {
   listarProducto: async(req, res) => {
     const { id } = req.params;
     try{
       if (id) {
-        const resultado = await persistencia.listarProducto(id);
+        const resultado = await productosAPI.buscarUno(id);
         if(resultado){
           res.status(200).json({producto:resultado});
         }else{
           res.status(404).json({ error: 'Producto no encontrado' });
         }
       } else {
-        const resultado = await persistencia.listarProductos();
+        const resultado = await productosAPI.buscarTodos();
         if(resultado.length > 0 ){
           res.status(200).json({productos:resultado});
         }else{
@@ -39,7 +37,7 @@ module.exports = {
       stock: stock
     };
     try {
-      await persistencia.guardarProducto(producto);
+      await productosAPI.guardar(producto);
       res.status(201).json({ status: 'OK' });
     } catch (e) {
       console.log(e);
@@ -60,7 +58,7 @@ module.exports = {
       stock: stock
     };
     try {
-      await persistencia.actualizarProducto(id, producto);
+      await productosAPI.actualizar(id,producto);
       res.status(200).json({ status: 'OK' });
     } catch (e) {
       console.log(e);
@@ -71,12 +69,11 @@ module.exports = {
   borrarProducto: async(req, res) => {
     const { id } = req.params;
     try {
-      await persistencia.borrarProducto(id);
+      await productosAPI.borrar(id);
       res.status(200).json({ status: 'OK' });
     } catch (e) {
       console.log(e);
       res.status(400).json({ error: 'Error: ' + e });
     }
-
   }
 }

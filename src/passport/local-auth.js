@@ -1,7 +1,6 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('../models/userModel');
-const Carrito = require('../models/carritoModel');
+const userAPI = require('../api/usuarioAPI');
 const mailer = require('../utils/gmailer');
 const warnings = require('log4js').getLogger('warnings');
 
@@ -10,25 +9,26 @@ passport.use('signup', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, async (req, email, password, done) => {
-  const user = await User.findOne({ 'email': email })
+  const user = await userAPI.obtenerUsuario(email);
   if (user) {
     warnings.warn('Usuario ya existente');
     return done(null, false);
   } else {
-    const newUser = new User();
-    newUser.email = email;
-    newUser.password = newUser.encryptPassword(password);
-    newUser.nombre = req.body.nombre;
-    newUser.edad = req.body.edad;
-    newUser.telefono = req.body.telefono;
-    newUser.fotoURL = req.body.fotoURL;
-    newUser.esAdmin = req.body.esAdmin || false;
-    const newCarrito = new Carrito();
-    const savedCarrito = await newCarrito.save();
-    newUser.carrito = savedCarrito;
-    await newUser.save()
+    const {nombre,edad,telefono,fotoURL,esAdmin} = req.body;
+    const newUser = {
+      email,
+      password : userAPI.encriptarContrasena(password),
+      nombre,
+      edad,
+      telefono,
+      fotoURL,
+      esAdmin: esAdmin ?? false
+    }
+    console.log(newUser);
+    const usuario = await userAPI.crearUsuario(newUser);
+    const usuarioCreado = await userAPI.obtenerUsuario(email);
     mailer.newUserMail();
-    done(null, newUser);
+    done(null, usuarioCreado);
   }
 }));
 
@@ -37,11 +37,11 @@ passport.use('login', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, async (req, email, password, done) => {
-  const user = await User.findOne({ email: email });
+  const user = await userAPI.obtenerUsuario(email);
   if (!user) {
     return done(null, false);
   }
-  if (!user.comparePassword(password)) {
+  if (!userAPI.compararContrasenas(password,user.password)) {
     warnings.warn('Contraseña incorrecta')
     return done(null, false);
   }
@@ -53,6 +53,6 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser(async (id, done) => {
-  const user = await User.findById(id);
+  const user = await userAPI.obtenerUsuarioPorId(id);
   done(null, user);
 });

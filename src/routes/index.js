@@ -33,9 +33,6 @@ router.get('/home',isLoggedIn, (req,res) => {
   res.render('home');
 })
 
-router.get('/carrito', isLoggedIn, (req, res) => {
-  res.render('carrito',{user:req.user});
-})
 
 router.get('/productos', isLoggedIn, (req, res) => {
   res.render('productos',{user:req.user});

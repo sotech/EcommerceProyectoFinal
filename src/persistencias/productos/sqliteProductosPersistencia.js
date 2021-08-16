@@ -2,10 +2,11 @@ const knex = require('knex')({
   client: 'sqlite3',
   connection: {
     filename: "./src/dbs/productos.sqlite"
-  }
+  },
+  useNullAsDefault: true
 });
 
-class SqlitePersistencia {
+class SqliteProductosPersistencia {
   constructor() {
     this.knex = knex;
     this.knex.schema.hasTable('productos').then((exists) => {
@@ -37,7 +38,11 @@ class SqlitePersistencia {
 
   listarProducto = async (id) => {
     const resultado = await this.knex.from('productos').select("*").where('id', '=', id);
-    return resultado;
+    if(resultado.length > 0){
+      return resultado[0];
+    }else{
+      return null;
+    }
   }
 
   listarProductos = async () => {
@@ -46,7 +51,6 @@ class SqlitePersistencia {
   }
 
   actualizarProducto = async (id, producto) => {
-    const { nombre, descripcion, codigo, foto, precio, stock } = producto;
     producto.timestamp = new Date();
     const resultado = await this.knex.from('productos').where('id', id).update(producto)
     return resultado;
@@ -59,4 +63,4 @@ class SqlitePersistencia {
 
 }
 
-module.exports = SqlitePersistencia;
+module.exports = SqliteProductosPersistencia;

@@ -24,21 +24,6 @@
           let button = createNode('button');
           let span = createNode('span');
           span.innerHTML = producto.nombre;
-          const carritoId = "<%= user.carrito %>";
-          console.log(carritoId);
-          button.onclick = async() => {
-            const data = JSON.stringify({ id_carrito: carritoId});
-            let response = await fetch(`carrito/agregar/${producto._id}`, {
-              method: 'POST',
-              headers:{ 'Content-Type': 'application/json'},
-              body: data
-            })
-              .then(response => response.json())
-              .then(data => {
-                console.log(data);
-              })
-          }
-          button.innerHTML= 'Agregar al carrito';
           append(li,span);
           append(li,button);
           append(ul,li);

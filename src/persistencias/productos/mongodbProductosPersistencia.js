@@ -1,8 +1,8 @@
-const Producto = require('../models/productoModel');
+const Producto = require('../../models/productoModel');
 
-class MongoDBPersistencia{
+class MongoDBProductosPersistencia{
   constructor() {
-    require('../utils/mongoConnection');
+    require('../../utils/mongoConnection');
   }
 
   guardarProducto = async (producto) => {
@@ -33,4 +33,4 @@ class MongoDBPersistencia{
 
 }
 
-module.exports = MongoDBPersistencia;
+module.exports = MongoDBProductosPersistencia;

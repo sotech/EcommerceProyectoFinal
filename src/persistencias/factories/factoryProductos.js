@@ -1,13 +1,13 @@
-const persistenciaElegida = process.env.PERSISTENCIA_ELEGIDA;
+const persistenciaElegida = process.env.PERSISTENCIA_PRODUCTOS;
 //Importar persistencias
-const mongodbPersistencia = require('./mongodbPersistencia');
-const sqlitePersistencia = require('./sqlitePersistencia');
+const mongodbPersistencia = require('../productos/mongodbProductosPersistencia');
+const sqlitePersistencia = require('../productos/sqliteProductosPersistencia');
 const info = require('log4js').getLogger();
-//Clase
-class FactoryPersistencias{
+
+class FactoryProductos{
   constructor(){
     this.nombrePersistencia = persistenciaElegida;
-    info.info("PERSISTENCIA: " + this.nombrePersistencia);
+    info.info("PERSISTENCIA PRODUCTOS: " + this.nombrePersistencia);
   }
   obtenerPersistencia(){
     switch(this.nombrePersistencia){
@@ -24,4 +24,4 @@ class FactoryPersistencias{
   }
 }
 
-module.exports = FactoryPersistencias;
+module.exports = FactoryProductos;
