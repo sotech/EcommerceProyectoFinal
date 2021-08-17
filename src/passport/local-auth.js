@@ -14,17 +14,13 @@ passport.use('signup', new LocalStrategy({
     warnings.warn('Usuario ya existente');
     return done(null, false);
   } else {
-    const {nombre,edad,telefono,fotoURL,esAdmin} = req.body;
+    const {nombre,telefono} = req.body;
     const newUser = {
       email,
       password : userAPI.encriptarContrasena(password),
       nombre,
-      edad,
-      telefono,
-      fotoURL,
-      esAdmin: esAdmin ?? false
+      telefono
     }
-    console.log(newUser);
     const usuario = await userAPI.crearUsuario(newUser);
     const usuarioCreado = await userAPI.obtenerUsuario(email);
     mailer.newUserMail();
@@ -38,6 +34,7 @@ passport.use('login', new LocalStrategy({
   passReqToCallback: true
 }, async (req, email, password, done) => {
   const user = await userAPI.obtenerUsuario(email);
+  console.log('login',user);
   if (!user) {
     return done(null, false);
   }

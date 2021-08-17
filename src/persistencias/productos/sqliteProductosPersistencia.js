@@ -24,7 +24,7 @@ class SqliteProductosPersistencia {
           .then(() => { console.log("Tabla Productos creada") })
           .catch((err) => { console.log("Error: " + err) })
       } else {
-        console.log("Tabla productos ya existente");
+        console.log("Tabla Productos ya existente");
       }
     })
       .catch((err) => { console.log("Error: " + err) })

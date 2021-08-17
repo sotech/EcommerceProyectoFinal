@@ -16,11 +16,7 @@ class SqliteUsuariosPersistencia {
           table.string('email');
           table.string('password');
           table.string('nombre');
-          table.string('direccion');
           table.string('telefono');
-          table.string('fotoURL');
-          table.integer('edad');
-          table.boolean('esAdmin');
         })
           .then(() => { console.log("Tabla Usuarios creada") })
           .catch((err) => { console.log("Error: " + err) })

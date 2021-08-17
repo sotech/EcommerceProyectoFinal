@@ -1,8 +1,23 @@
-<h1>Perfil</h1>
-<div>  
-  <h3>Usuario: <%= user.email %></h3>
-  <h3>Nombre: <%= user.nombre %></h3>
-  <h3>Edad:<%= user.edad %></h3>
-  <img width='100px' heigth='100px' src= <%= user.fotoURL %>>
-  <a href='./logout'><button>Logout</button></a>
-</div>
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="d-flex flex-column mt-2">
+    <h1>Perfil</h1>
+    <div>
+      <h4>Usuario: <%= user.email %>
+      </h4>
+      <h4>Nombre: <%= user.nombre %>
+      </h4>
+      <h4>Telefono: <%= user.telefono %>
+      </h4>
+      <a href='./logout'><button>Logout</button></a>
+    </div>
+  </div>
+</body>
+
+</html>

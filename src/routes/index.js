@@ -10,7 +10,8 @@ const isLoggedIn = (req, res, next) => {
 }
 
 router.get('/', (req, res) => {
-  res.render('index');
+  if(!req.isAuthenticated()) res.render('index');
+  res.redirect('/home');
 });
 
 router.get('/login',(req,res)=>{
@@ -29,7 +30,7 @@ router.get('/fail', (req, res) => {
   res.render('fail');
 })
 
-router.get('/home',isLoggedIn, (req,res) => {
+router.get('/home', isLoggedIn, (req,res) => {
   res.render('home');
 })
 
@@ -43,17 +44,20 @@ router.get('/logout',(req,res)=>{
   res.redirect('/');
 })
 
+router.get('/carrito', (req,res)=>{
+  res.render('carrito');
+})
 router.get('/profile', isLoggedIn, (req, res) => {
   res.render('profile',{user:req.user});
 })
 
 router.post('/signup', passport.authenticate('signup', {
-  successRedirect: '/home',
+  successRedirect: '/carrito',
   failureRedirect: '/fail'
 }));
 
 router.post('/login', passport.authenticate('login',{
-  successRedirect:'/home',
+  successRedirect:'/carrito',
   failureRedirect:'/fail'
 }));
 
