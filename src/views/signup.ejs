@@ -12,14 +12,17 @@
       <div class="form-group mt-2 mb-2">
         <label for="nombre">Nombre</label>
         <input class="form-control" type="text" name="nombre" id="nombre" placeholder="Nombre completo">
+        <small hidden id="nombreHelp" class="form-text text-muted">Ingrese un nombre</small>
       </div>
       <div class="form-group mt-2 mb-2">
         <label for="telefono">Telefono</label>
         <input class="form-control" type="text" name="telefono" id="telefono" placeholder="Telefono">
+        <small hidden id="telefonoHelp" class="form-text text-muted">Ingrese un telefono</small>
       </div>
       <div class="form-group mt-2 mb-2">
         <label for="email">Email</label>
         <input class="form-control" type="text" name="email" id="email" placeholder="Email">
+        <small hidden id="emailHelp" class="form-text text-muted">Ingrese un email</small>
       </div>
       <div class="form-group mt-2 mb-2">
         <label for="password">Contraseña</label>
@@ -28,6 +31,7 @@
       <div class="form-group mt-2 mb-2">
         <label for="password2">Repetir contraseña</label>
         <input class="form-control" type="password" name="password2" id="password2" placeholder="Repetir contraseña">
+        <small hidden id="passwordHelp" class="form-text text-muted">Las contraseñas no coinciden</small>
       </div>
       <button id="submitBtn" type="submit" class="btn btn-primary mt-3">Registrarse</button>
     </form>
@@ -40,6 +44,10 @@
   const nombreInput = document.getElementById('nombre');
   const telefonoInput = document.getElementById('telefono');
   const emailInput = document.getElementById('email');
+  const nombreHelp = document.getElementById('nombreHelp');
+  const emailHelp = document.getElementById('emailHelp');
+  const telefonoHelp = document.getElementById('telefonoHelp');
+  const passwordHelp = document.getElementById('passwordHelp');
 
   const validatePwd = () => {
     const pw1value = passwordInput.value;
@@ -49,10 +57,14 @@
 
   const validateForm = () =>{
     const nameHasValue = nombreInput.value != '';
+    nombreHelp.hidden = nameHasValue;
     const emailHasValue = emailInput.value != '';
-    const validFields = nameHasValue && emailHasValue && validatePwd();
-    if (!validFields) alert('Faltan datos');
-    return validFields;
+    emailHasValue.hidden = emailHasValue;
+    const telefonoHasValue = telefonoInput.value != '';
+    telefonoHelp.hidden = telefonoHasValue;
+    passwordHelp.hidden = validatePwd();
+    return nameHasValue && emailHasValue && validatePwd();
+    
   }
 </script>
 </html>
