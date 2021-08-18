@@ -1,7 +1,5 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
-const userAPI = require('../api/usuarioAPI');
-const mailer = require('../utils/gmailer');
 const warnings = require('log4js').getLogger('warnings');
 
 passport.use('signup', new LocalStrategy({
@@ -9,11 +7,13 @@ passport.use('signup', new LocalStrategy({
   passwordField: 'password',
   passReqToCallback: true
 }, async (req, email, password, done) => {
+  //Buscar si ya existe el usuario
   const user = await userAPI.obtenerUsuario(email);
   if (user) {
     warnings.warn('Usuario ya existente');
     return done(null, false);
   } else {
+    //Crear usuario
     const {nombre,telefono} = req.body;
     const newUser = {
       email,
@@ -22,7 +22,7 @@ passport.use('signup', new LocalStrategy({
       telefono
     }
     const usuario = await userAPI.crearUsuario(newUser);
-    const usuarioCreado = await userAPI.obtenerUsuario(email);
+    const usuarioCreado = await userAPI.obtenerUsuario(usuario.email);
     mailer.newUserMail();
     done(null, usuarioCreado);
   }
@@ -34,7 +34,6 @@ passport.use('login', new LocalStrategy({
   passReqToCallback: true
 }, async (req, email, password, done) => {
   const user = await userAPI.obtenerUsuario(email);
-  console.log('login',user);
   if (!user) {
     return done(null, false);
   }

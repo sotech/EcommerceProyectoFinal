@@ -6,16 +6,16 @@
 </head>
 
 <body>
-  <div class="d-flex flex-column mt-2">
+  <div class="d-flex flex-column align-items-center">
     <h1>Perfil</h1>
-    <div>
-      <h4>Usuario: <%= user.email %>
-      </h4>
-      <h4>Nombre: <%= user.nombre %>
-      </h4>
-      <h4>Telefono: <%= user.telefono %>
-      </h4>
-      <a href='./logout'><button>Logout</button></a>
+    <div class="text-center mt-3">
+      <h3>Usuario:</h3>
+      <h4><%= user.email %></h4>
+      <h3>Nombre:</h3>
+      <h4><%= user.nombre %></h4>
+      <h3>Telefono:</h3>
+      <h4><%= user.telefono %></h4>
+      <a href='./logout'><button class="btn btn-primary mt-3">Logout</button></a>
     </div>
   </div>
 </body>

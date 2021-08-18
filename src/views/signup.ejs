@@ -38,7 +38,6 @@
   </div>
 </body>
 <script>
-  const submitBtn = document.getElementById('submitBtn');
   const passwordInput = document.getElementById('password');
   const password2Input = document.getElementById('password2');
   const nombreInput = document.getElementById('nombre');
@@ -59,12 +58,11 @@
     const nameHasValue = nombreInput.value != '';
     nombreHelp.hidden = nameHasValue;
     const emailHasValue = emailInput.value != '';
-    emailHasValue.hidden = emailHasValue;
+    emailHelp.hidden = emailHasValue;
     const telefonoHasValue = telefonoInput.value != '';
     telefonoHelp.hidden = telefonoHasValue;
     passwordHelp.hidden = validatePwd();
     return nameHasValue && emailHasValue && validatePwd();
-    
   }
 </script>
 </html>
