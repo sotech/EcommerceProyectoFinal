@@ -8,8 +8,7 @@ const morgan = require('morgan');
 const http = require('http');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
-const indexRoutes = require('./src/routes/index');
-const productosRoutes = require('./src/routes/productos');
+const productosRoutes = require('./src/routes/productoRoutes');
 const passport = require('passport');
 const session = require('express-session');
 const clusterConfig = process.env.MODO_CLUSTER != 'NONE' ? process.env.MODO_CLUSTER : '' ;
@@ -36,10 +35,8 @@ app.use((req,res,next) => {
     next();
 })
 app.use(morgan('dev'));
-app.use('/', indexRoutes);
+
 app.use('/productos', productosRoutes);
-
-
 
 if(clusterConfig == 'CLUSTER'){
     console.log('Modo cluster');
