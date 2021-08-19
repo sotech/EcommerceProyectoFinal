@@ -44,7 +44,14 @@ exports.crearCarrito = async() => {
 
 exports.borrarProducto = async(id)=>{
   const carrito = await Carrito.findOne({});
-  carrito.items = carrito.items.filter(p => p._id != id);
+  //Buscar item
+  carrito.items.map(item => {
+    if (JSON.stringify(item._id) == JSON.stringify(id)){
+      item.cantidad--;
+    }
+  })
+  //Quitar
+  carrito.items = carrito.items.filter(item => item.cantidad > 0);
   return await carrito.save();
 }
 
