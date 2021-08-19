@@ -1,9 +1,18 @@
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+</head>
+<body class="container">
 <h1>Productos</h1>
 <ul id="productos">
 
 </ul>
+<a href="/carrito"><button class="btn btn-primary">Carrito</button></a>
+</body>
+</html>
 <script>
-  function createNode(element) {
+    function createNode(element) {
       return document.createElement(element);
     }
 
@@ -11,22 +20,43 @@
       return parent.appendChild(el);
     }
 
+    const addToCart = async (id) => {
+      console.log("Added to cart: " + id);
+      await agregarAlCarrito(id);
+    }
+        
+    const agregarAlCarrito = async id => {
+      const urlAgregarAlCarrito = 'carrito/agregar/';
+      const url = `${urlAgregarAlCarrito}${id}`;
+      const response = await fetch(url,{
+        method:'POST'
+      });
+      const responseJson = await response.json();
+      console.log(responseJson);
+    }
+
     const popularProductos = () => {
       //Obtener lista a popular
       const ul = document.getElementById('productos');
       //Ruta para consultar
-      const url = 'productos/listar';
-
-      fetch(url)
+      const urlListarProductos = 'productos/listar';
+      
+      
+      fetch(urlListarProductos)
         .then((resp) => resp.json())
         .then((data) => {
-          let productos = data.productos;
+          const productos = data.data;
           return productos.map(function (producto) {
             let li = createNode('li');
             let button = createNode('button');
-            let span = createNode('span');
-            span.innerHTML = producto.nombre;
-            append(li, span);
+            let p = createNode('p');
+            p.innerHTML = producto.nombre;            
+            p.classList.add('mr-2');
+            button.classList.add('btn');
+            button.classList.add('btn-primary');
+            button.innerHTML = 'Agregar al carrito';
+            button.onclick = () => addToCart(producto._id);
+            append(li, p);
             append(li, button);
             append(ul, li);
           })
