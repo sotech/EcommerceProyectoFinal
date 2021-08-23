@@ -16,13 +16,17 @@ router.get('/home', isLoggedIn, (req, res) => {
   res.render('home');
 })
 
-router.get("/productos", (req, res) => {
+router.get("/productos", isLoggedIn, (req, res) => {
   res.render('productos');
 });
 
-router.get("/carrito", (req, res) => {
+router.get("/carrito", isLoggedIn, (req, res) => {
   res.render('carrito');
 });
+
+router.get('/profile',isLoggedIn,(req,res)=>{
+  res.render('profile',{user:req.user})
+})
 
 router.get('/login', (req, res) => {
   res.render('login');
