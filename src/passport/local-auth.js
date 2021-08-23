@@ -1,6 +1,8 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const warnings = require('log4js').getLogger('warnings');
+const userAPI = require('../api/userAPI');
+const mailer = require('../utils/gmailer');
 
 passport.use('signup', new LocalStrategy({
   usernameField: 'email',
@@ -15,13 +17,13 @@ passport.use('signup', new LocalStrategy({
   } else {
     //Crear usuario
     const {nombre,telefono} = req.body;
-    const newUser = {
+    const payload = {
       email,
       password : userAPI.encriptarContrasena(password),
       nombre,
       telefono
     }
-    const usuario = await userAPI.crearUsuario(newUser);
+    const usuario = await userAPI.crearUsuario(payload);
     const usuarioCreado = await userAPI.obtenerUsuario(usuario.email);
     mailer.newUserMail();
     done(null, usuarioCreado);

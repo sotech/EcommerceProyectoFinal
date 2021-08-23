@@ -1,24 +1,29 @@
 require('../utils/mongoConnection');
 const User = require("../models/userModel");
+const carritoAPI = require("./carritoAPI");
 const bcrypt = require('bcrypt-nodejs');
 
 exports.obtenerUsuario = async email => {
   const user = await User.find({'email':email});
+  return user[0];
+}
+
+exports.obtenerUsuarioPorId = async id => {
+  const user = await User.findById(id);
   return user;
 }
 
 exports.crearUsuario = async payload => {
-  const { nombre, descripcion, codigo, precio, fotoUrl, stock } = payload;
-  const User = {
-    timestamp: new Date(),
+  const { email, password, nombre, telefono } = payload;
+  const carrito = await carritoAPI.crearCarrito();
+  const usuarioData = {
+    email,
+    password,
     nombre,
-    descripcion,
-    codigo,
-    precio,
-    fotoUrl,
-    stock
+    telefono,
+    carrito
   };
-  const nuevoUser = await User.create(User);
+  const nuevoUser = await User.create(usuarioData);
   return nuevoUser
 }
 
