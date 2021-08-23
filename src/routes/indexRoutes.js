@@ -41,6 +41,9 @@ router.get('/signup', (req, res) => {
   res.render('signup');
 })
 
+router.get('/fail',(req,res)=>{
+  res.render('fail',{error:req.flash('error')})
+})
 router.post('/signup', passport.authenticate('signup', {
   successRedirect: '/home',
   failureRedirect: '/fail'

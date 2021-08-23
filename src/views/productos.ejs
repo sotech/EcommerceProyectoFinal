@@ -3,11 +3,22 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 </head>
-<body class="container">
-<h1>Productos</h1>
-<ul id="productos">
+<body class="container bg-info">
+<h1 class="text-center">Productos</h1>
+<table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Precio</th>
+      <th>Descripcion</th>
+      <th>Imagen</th>
+      <th>Stock</th>
+    </tr>
+  </thead>
+  <tbody id="productosCarrito">
 
-</ul>
+  </tbody>
+</table>
 <a href="/carrito"><button class="btn btn-primary">Carrito</button></a>
 <a href='./home'><button class="btn btn-primary">Home</button></a>
 </body>
@@ -46,7 +57,7 @@
 
     const popularProductos = () => {
       //Obtener lista a popular
-      const ul = document.getElementById('productos');
+      const table = document.getElementById('productosCarrito');
       //Ruta para consultar
       const urlListarProductos = 'productos/listar';
       
@@ -55,19 +66,42 @@
         .then((resp) => resp.json())
         .then((data) => {
           const productos = data.data;
+          console.log(productos);
           return productos.map(function (producto) {
-            let li = createNode('li');
+            let tr = createNode('tr');
+            let tdNombre = createNode('td');
+            let pNombre = createNode('p');
+            pNombre.innerHTML = producto.nombre;            
+            pNombre.classList.add('mr-2');
+            append(tdNombre, pNombre);
+            let tdPrecio = createNode('td');
+            let pPrecio = createNode('p');
+            pPrecio.innerHTML = `$${producto.precio}`;
+            pPrecio.classList.add('mr-2');
+            append(tdPrecio, pPrecio);
+            let tdDescripcion = createNode('td');
+            let pDescripcion = createNode('p');
+            pDescripcion.innerHTML = producto.descripcion;
+            append(tdDescripcion,pDescripcion);
+            let tdImagen = createNode('td');
+            let img = createNode('img');
+            img.src = producto.fotoUrl;
+            img.height = '75';
+            img.width = '75';
+            append(tdImagen,img);
+            let tdButton = createNode('td');
             let button = createNode('button');
-            let p = createNode('p');
-            p.innerHTML = producto.nombre;            
-            p.classList.add('mr-2');
             button.classList.add('btn');
             button.classList.add('btn-danger');
             button.innerHTML = 'Agregar al carrito';
             button.onclick = () => addToCart(producto._id, producto.nombre);
-            append(li, p);
-            append(li, button);
-            append(ul, li);
+            append(tdButton,button);
+            append(tr, tdNombre);
+            append(tr, tdPrecio);
+            append(tr, tdDescripcion);
+            append(tr, tdImagen);
+            append(tr, tdButton);
+            append(table, tr);
           })
         })
         .catch(function (error) {

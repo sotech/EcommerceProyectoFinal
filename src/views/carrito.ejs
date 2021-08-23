@@ -5,14 +5,9 @@
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 </head>
 
-<body class="container">
+<body class="bg-info container">
   <div class="d-flex justify-content-around mt-2">
-    <div></div>
-    <h1 >Carrito</h1>
-    <div>
-      <a href='/productos'><button class="btn btn-primary">Productos</button></a>
-      <a href='./home'><button class="btn btn-primary">Home</button></a>
-    </div>
+    <h1>Carrito</h1>
   </div>
   <div>
     <h4>Productos cargados</h4>
@@ -31,6 +26,10 @@
 
       </tbody>
     </table>
+    <div>
+      <a href='/productos'><button class="btn btn-primary">Productos</button></a>
+      <a href='./home'><button class="btn btn-primary">Home</button></a>
+    </div>
   </div>
 </body>
 
@@ -71,8 +70,8 @@
       let tdImagen = createNode('td');
       let img = createNode('img');
       img.src = item.fotoUrl;
-      img.style.heigth = '100px';
-      img.style.width = '100px';
+      img.height = '75';
+      img.width = '75';
       let tdCantidad = createNode('td');
       tdCantidad.innerHTML = p.cantidad;
       let tdButton = createNode('td');

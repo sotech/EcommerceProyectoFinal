@@ -1,1 +1,20 @@
-<h1>fail</h1>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+  </head>
+
+  <body class="bg-info rounded ">
+    <div class="container mt-3">
+      <h1 class="font-weight-bold text-center">Error</h1>
+      <div class="container text-center mt-5 pb-3">
+        <h4 class="font-weight-normal text-danger "><%=error%></h4>
+        <h5>Redireccionando...</h5>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  setTimeout(function () { window.location.href = "/"; }, 3000);
+</script>

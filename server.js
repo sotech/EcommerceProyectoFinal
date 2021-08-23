@@ -13,6 +13,7 @@ const productosRoutes = require('./src/routes/productoRoutes');
 const carritoRoutes = require('./src/routes/carritoRoutes');
 const passport = require('passport');
 const session = require('express-session');
+const flash = require('connect-flash');
 const clusterConfig = process.env.MODO_CLUSTER != 'NONE' ? process.env.MODO_CLUSTER : '' ;
 const info = require('log4js').getLogger();
 
@@ -36,6 +37,7 @@ app.use((req,res,next) => {
     res.header('Access-Control-Allow-Origin','*');
     next();
 })
+app.use(flash());
 app.use(morgan('dev'));
 
 app.use('/',indexRoutes);
