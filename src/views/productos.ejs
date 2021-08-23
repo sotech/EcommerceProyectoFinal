@@ -20,8 +20,8 @@
       return parent.appendChild(el);
     }
 
-    const addToCart = async (id) => {
-      console.log("Added to cart: " + id);
+    const addToCart = async (id,nombre) => {
+      alert("Agregado al carrito: " + nombre);
       await agregarAlCarrito(id);
     }
         
@@ -55,7 +55,7 @@
             button.classList.add('btn');
             button.classList.add('btn-primary');
             button.innerHTML = 'Agregar al carrito';
-            button.onclick = () => addToCart(producto._id);
+            button.onclick = () => addToCart(producto._id, producto.nombre);
             append(li, p);
             append(li, button);
             append(ul, li);
