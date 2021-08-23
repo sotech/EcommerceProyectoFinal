@@ -9,6 +9,7 @@
 
 </ul>
 <a href="/carrito"><button class="btn btn-primary">Carrito</button></a>
+<a href='./home'><button class="btn btn-primary">Home</button></a>
 </body>
 </html>
 <script>
@@ -53,7 +54,7 @@
             p.innerHTML = producto.nombre;            
             p.classList.add('mr-2');
             button.classList.add('btn');
-            button.classList.add('btn-primary');
+            button.classList.add('btn-danger');
             button.innerHTML = 'Agregar al carrito';
             button.onclick = () => addToCart(producto._id, producto.nombre);
             append(li, p);
