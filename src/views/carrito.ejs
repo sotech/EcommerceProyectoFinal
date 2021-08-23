@@ -54,11 +54,12 @@
 
   const popularCarrito = async() => {
     const url = 'carrito/listar';
-    const response = await fetch(url);
+    const carritoId = '<%- (user.carrito) %>';
+    const response = await fetch(`${url}/${carritoId}`);
     const responseJson = await response.json(); 
     const productos = responseJson?.data?.items;
     const table = document.getElementById('productosCarrito');
-    productos.map(p => {
+    productos?.map(p => {
       const item = p._id
       let tr = createNode('tr');
       let tdNombre = createNode('td');

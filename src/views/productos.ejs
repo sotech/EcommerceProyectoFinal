@@ -13,6 +13,7 @@
 </body>
 </html>
 <script>
+    const carritoId = '<%- (user.carrito) %>';
     function createNode(element) {
       return document.createElement(element);
     }
@@ -29,8 +30,15 @@
     const agregarAlCarrito = async id => {
       const urlAgregarAlCarrito = 'carrito/agregar/';
       const url = `${urlAgregarAlCarrito}${id}`;
+      const data = {
+        id_carrito:carritoId
+      };
       const response = await fetch(url,{
-        method:'POST'
+        method:'POST',
+        headers:{
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
       });
       const responseJson = await response.json();
       console.log(responseJson);

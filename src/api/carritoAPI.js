@@ -12,17 +12,17 @@ exports.obtenerProductoPorId = async (id) =>{
   return producto[0];
 }
 
-exports.obtenerCarrito = async() => {
-  const carrito = await Carrito.findOne().populate({
+exports.obtenerCarrito = async(id) => {
+  const carrito = await Carrito.findById(id).populate({
     path:'items._id',
     model:'Producto'
   });
   return carrito;
 }
 
-exports.agregarProducto = async(id) => {
-  const producto = await productoAPI.obtenerProductoPorId(id);
-  const carrito = await Carrito.findOne({});
+exports.agregarProducto = async(id_carrito,id_producto) => {
+  const producto = await productoAPI.obtenerProductoPorId(id_producto);
+  const carrito = await Carrito.findById(id_carrito);
   let existe = false;
   carrito.items.map(item => {
     if (JSON.stringify(item._id) == JSON.stringify(producto._id)) {
