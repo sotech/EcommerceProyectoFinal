@@ -4,7 +4,27 @@ const Producto = require("../models/productoModel");
 exports.obtenerProductoPorId = async id => {
   const producto = await Producto.findById(id);
   return producto;
-}
+};
+
+exports.obtenerProductoPorNombre = async nombre => {
+  const producto = await Producto.find({'nombre':nombre});
+  return producto;
+};
+
+exports.obtenerProductoPorRangoPrecio = async (min,max) =>{
+  const productos = await Producto.find({'precio':{$gte:min,$lte:max}});
+  return productos;
+};
+
+exports.obtenerProductoPorRangoStock = async (min, max) => {
+  const productos = await Producto.find({ 'stock': { $gte: min, $lte: max } });
+  return productos;
+};
+
+exports.obtenerProductoPorCodigo = async codigo => {
+  const producto = await Producto.find({ 'codigo': codigo });
+  return producto;
+};
 
 exports.obtenerProductos = async () => {
   const productos = await Producto.find();
