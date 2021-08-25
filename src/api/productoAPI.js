@@ -1,56 +1,46 @@
-require('../utils/mongoConnection');
-const Producto = require("../models/productoModel");
+const Singleton = require('../persistencias/singletonProductos');
+const baseDeDatos = Singleton.getInstancia().dao;
 
 exports.obtenerProductoPorId = async id => {
-  const producto = await Producto.findById(id);
+  const producto = await baseDeDatos.obtenerProductoPorId(id);
   return producto;
 };
 
 exports.obtenerProductoPorNombre = async nombre => {
-  const producto = await Producto.find({'nombre':nombre});
-  return producto[0];
+  const producto = await baseDeDatos.obtenerProductoPorNombre(nombre);
+  return producto;
 };
 
-exports.obtenerProductoPorRangoPrecio = async (min,max) =>{
-  const productos = await Producto.find({'precio':{$gte:min,$lte:max}});
+exports.obtenerProductoPorRangoPrecio = async (min, max) => {
+  const productos = await baseDeDatos.obtenerProductoPorRangoPrecio(min, max);
   return productos;
 };
 
 exports.obtenerProductoPorRangoStock = async (min, max) => {
-  const productos = await Producto.find({ 'stock': { $gte: min, $lte: max } });
+  const productos = await baseDeDatos.obtenerProductoPorRangoStock(min, max);
   return productos;
 };
 
 exports.obtenerProductoPorCodigo = async codigo => {
-  const producto = await Producto.find({ 'codigo': codigo });
-  return producto[0];
+  const producto = await baseDeDatos.obtenerProductoPorCodigo(codigo);
+  return producto;
 };
 
 exports.obtenerProductos = async () => {
-  const productos = await Producto.find();
+  const productos = await baseDeDatos.obtenerProductos();
   return productos;
 };
 
 exports.agregarProducto = async payload => {
-  const {nombre,descripcion,codigo,precio,fotoUrl,stock} = payload;
-  const producto = {
-    timestamp : new Date(),
-    nombre,
-    descripcion,
-    codigo,
-    precio,
-    fotoUrl,
-    stock
-  };
-  const nuevoProducto = await Producto.create(producto);
+  const nuevoProducto = await baseDeDatos.agregarProducto(payload);
   return nuevoProducto
 }
 
-exports.actualizarProducto = async (id,payload) => {
-  const producto = await Producto.findByIdAndUpdate(id,payload);
+exports.actualizarProducto = async (id, payload) => {
+  const producto = await baseDeDatos.actualizarProducto(id, payload);
   return producto;
 }
 exports.borrarProducto = async id => {
-  const producto = await Producto.findByIdAndRemove(id);
+  const producto = await baseDeDatos.borrarProducto(id);
   return producto
 }

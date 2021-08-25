@@ -56,7 +56,7 @@ exports.listarProducto = async (req, res) => {
         res.status(200).json({data:productos});
       }
       else {
-        res.status(200).json({ error: 'No hay productos cargados' })
+        res.status(404).json({ error: 'No hay productos cargados' })
       }
     }
   } catch (err) {
