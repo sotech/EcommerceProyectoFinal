@@ -25,10 +25,12 @@
   <div class="container m-2">
     <div class="form-group mt-2 mb-2">
       <input type="text" name="filtroNombre" id="filtroNombre" placeholder="Nombre">
+      <small hidden id="helperNombreFiltro" class="form-text text-muted">Ingrese un nombre</small>
       <button class="btn btn-primary" onclick=filtrarPorNombre()>Buscar por nombre</button>
     </div>
     <div class="form-group mt-2 mb-2">
       <input type="text" name="filtroCodigo" id="filtroCodigo" placeholder="Codigo">
+      <small hidden id="helperCodigoFiltro" class="form-text text-muted">Ingrese un codigo</small>
       <button class="btn btn-primary" onclick=filtrarPorCodigo()>Buscar por codigo</button>
     </div>
     <div class="form-group mt-2 mb-2">
@@ -55,25 +57,33 @@
 
   const filtrarPorNombre = async () => {
     const nombreFiltro = document.getElementById('filtroNombre').value;
+    const helperNombreFiltro = document.getElementById('helperNombreFiltro');
     if (nombreFiltro != '') {
+      helperNombreFiltro.hidden = true;
       const url = 'productos/filtrar/nombre';
       const response = await fetch(`${url}/${nombreFiltro}`);
       const producto = await response.json();
       limpiarTabla();
       reiniciarFiltros();
       popularTabla([producto.data]);
+    }else{
+      helperNombreFiltro.hidden = false;
     }
   }
 
   const filtrarPorCodigo = async () => {
     const codigoFiltro = document.getElementById('filtroCodigo').value;
+    const helperCodigoFiltro = document.getElementById('helperCodigoFiltro');
     if (codigoFiltro != '') {
+      helperCodigoFiltro.hidden = true;
       const url = 'productos/filtrar/codigo';
       const response = await fetch(`${url}/${codigoFiltro}`);
       const producto = await response.json();
       limpiarTabla();
       reiniciarFiltros();
       popularTabla([producto.data]);
+    }else{
+      helperCodigoFiltro.hidden = false;
     }
   }
 
@@ -87,6 +97,8 @@
       const response = await fetch(`${url}/?min=${precioMinFiltro}&max=${precioMaxFiltro}`);
       const productos = await response.json();
       popularTabla(productos.data);
+    }else{
+      alert('Valores minimo y maximo de precio mal ingresados');
     }
   };
 
@@ -100,6 +112,8 @@
         const response = await fetch(`${url}/?min=${stockMinFiltro}&max=${stockMaxFiltro}`);
         const productos = await response.json();
         popularTabla(productos.data);
+      } else {
+        alert('Valores minimo y maximo de stock mal ingresados');
       }
     };
 
