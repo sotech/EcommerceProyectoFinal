@@ -8,7 +8,7 @@ exports.obtenerProductoPorId = async id => {
 
 exports.obtenerProductoPorNombre = async nombre => {
   const producto = await Producto.find({'nombre':nombre});
-  return producto;
+  return producto[0];
 };
 
 exports.obtenerProductoPorRangoPrecio = async (min,max) =>{
@@ -23,7 +23,7 @@ exports.obtenerProductoPorRangoStock = async (min, max) => {
 
 exports.obtenerProductoPorCodigo = async codigo => {
   const producto = await Producto.find({ 'codigo': codigo });
-  return producto;
+  return producto[0];
 };
 
 exports.obtenerProductos = async () => {

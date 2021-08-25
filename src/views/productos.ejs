@@ -1,114 +1,230 @@
 <html>
+
 <head>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
 </head>
-<body class="container bg-info">
-<h1 class="text-center">Productos</h1>
-<table class="table table-dark table-striped">
-  <thead>
-    <tr>
-      <th>Nombre</th>
-      <th>Precio</th>
-      <th>Descripcion</th>
-      <th>Imagen</th>
-      <th>Stock</th>
-    </tr>
-  </thead>
-  <tbody id="productosCarrito">
 
-  </tbody>
-</table>
-<a href="/carrito"><button class="btn btn-primary">Carrito</button></a>
-<a href='./home'><button class="btn btn-primary">Home</button></a>
+<body class="container bg-info">
+  <h1 class="text-center">Productos</h1>
+  <table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Descripcion</th>
+        <th>Imagen</th>
+        <th>Stock</th>
+        <th>Carrito</th>
+      </tr>
+    </thead>
+    <tbody id="productosCarrito">
+
+    </tbody>
+  </table>
+  <div class="container m-2">
+    <div class="form-group mt-2 mb-2">
+      <input type="text" name="filtroNombre" id="filtroNombre" placeholder="Nombre">
+      <button class="btn btn-primary" onclick=filtrarPorNombre()>Buscar por nombre</button>
+    </div>
+    <div class="form-group mt-2 mb-2">
+      <input type="text" name="filtroCodigo" id="filtroCodigo" placeholder="Codigo">
+      <button class="btn btn-primary" onclick=filtrarPorCodigo()>Buscar por codigo</button>
+    </div>
+    <div class="form-group mt-2 mb-2">
+      <input type="number" name="filtroPrecioMin" id="filtroPrecioMin" placeholder="PrecioMin">
+      <input type="number" name="filtroPrecioMax" id="filtroPrecioMax" placeholder="PrecioMax">
+      <button class="btn btn-primary" onclick=filtrarPorPrecio()>Buscar por precio</button>
+    </div>
+    <div class="form-group mt-2 mb-2">
+      <input type="number" name="filtroStockMin" id="filtroStockMin" placeholder="StockMin">
+      <input type="number" name="filtroStockMax" id="filtroStockMax" placeholder="StockMax">
+      <button class="btn btn-primary" onclick=filtrarPorStock()>Buscar por stock</button>
+    </div>
+  </div>
+  <div class="container m-3">
+    <button class="btn btn-danger" onclick=reiniciarTabla()>Reiniciar tabla</button>
+    <a href="/carrito"><button class="btn btn-primary">Carrito</button></a>
+    <a href='./home'><button class="btn btn-primary">Home</button></a>
+  </div>
 </body>
+
 </html>
 <script>
-    const carritoId = '<%- (user.carrito) %>';
-    function createNode(element) {
-      return document.createElement(element);
-    }
+  const carritoId = '<%- (user.carrito) %>';
 
-    function append(parent, el) {
-      return parent.appendChild(el);
+  const filtrarPorNombre = async () => {
+    const nombreFiltro = document.getElementById('filtroNombre').value;
+    if (nombreFiltro != '') {
+      const url = 'productos/filtrar/nombre';
+      const response = await fetch(`${url}/${nombreFiltro}`);
+      const producto = await response.json();
+      limpiarTabla();
+      reiniciarFiltros();
+      popularTabla([producto.data]);
     }
+  }
 
-    const addToCart = async (id,nombre) => {
-      alert("Agregado al carrito: " + nombre);
-      await agregarAlCarrito(id);
+  const filtrarPorCodigo = async () => {
+    const codigoFiltro = document.getElementById('filtroCodigo').value;
+    if (codigoFiltro != '') {
+      const url = 'productos/filtrar/codigo';
+      const response = await fetch(`${url}/${codigoFiltro}`);
+      const producto = await response.json();
+      limpiarTabla();
+      reiniciarFiltros();
+      popularTabla([producto.data]);
     }
-        
-    const agregarAlCarrito = async id => {
-      const urlAgregarAlCarrito = 'carrito/agregar/';
-      const url = `${urlAgregarAlCarrito}${id}`;
-      const data = {
-        id_carrito:carritoId
-      };
-      const response = await fetch(url,{
-        method:'POST',
-        headers:{
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      const responseJson = await response.json();
-      console.log(responseJson);
-    }
+  }
 
-    const popularProductos = () => {
-      //Obtener lista a popular
-      const table = document.getElementById('productosCarrito');
-      //Ruta para consultar
-      const urlListarProductos = 'productos/listar';
-      
-      
-      fetch(urlListarProductos)
-        .then((resp) => resp.json())
-        .then((data) => {
-          const productos = data.data;
-          console.log(productos);
-          return productos.map(function (producto) {
-            let tr = createNode('tr');
-            let tdNombre = createNode('td');
-            let pNombre = createNode('p');
-            pNombre.innerHTML = producto.nombre;            
-            pNombre.classList.add('mr-2');
-            append(tdNombre, pNombre);
-            let tdPrecio = createNode('td');
-            let pPrecio = createNode('p');
-            pPrecio.innerHTML = `$${producto.precio}`;
-            pPrecio.classList.add('mr-2');
-            append(tdPrecio, pPrecio);
-            let tdDescripcion = createNode('td');
-            let pDescripcion = createNode('p');
-            pDescripcion.innerHTML = producto.descripcion;
-            append(tdDescripcion,pDescripcion);
-            let tdImagen = createNode('td');
-            let img = createNode('img');
-            img.src = producto.fotoUrl;
-            img.height = '75';
-            img.width = '75';
-            append(tdImagen,img);
-            let tdButton = createNode('td');
-            let button = createNode('button');
-            button.classList.add('btn');
-            button.classList.add('btn-danger');
-            button.innerHTML = 'Agregar al carrito';
-            button.onclick = () => addToCart(producto._id, producto.nombre);
-            append(tdButton,button);
-            append(tr, tdNombre);
-            append(tr, tdPrecio);
-            append(tr, tdDescripcion);
-            append(tr, tdImagen);
-            append(tr, tdButton);
-            append(table, tr);
-          })
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+  const filtrarPorPrecio = async () => {
+    const precioMinFiltro = document.getElementById('filtroPrecioMin').value;
+    const precioMaxFiltro = document.getElementById('filtroPrecioMax').value;
+    if(precioMinFiltro != '' && precioMaxFiltro != ''){
+      reiniciarFiltros();
+      limpiarTabla();
+      const url = 'productos/filtrar/precio';
+      const response = await fetch(`${url}/?min=${precioMinFiltro}&max=${precioMaxFiltro}`);
+      const productos = await response.json();
+      popularTabla(productos.data);
     }
+  };
 
-    popularProductos();
-    
+  const filtrarPorStock = async () => {
+      const stockMinFiltro = document.getElementById('filtroStockMin').value;
+      const stockMaxFiltro = document.getElementById('filtroStockMax').value;
+      if (stockMinFiltro != '' && stockMaxFiltro != '') {
+        reiniciarFiltros();
+        limpiarTabla();
+        const url = 'productos/filtrar/stock';
+        const response = await fetch(`${url}/?min=${stockMinFiltro}&max=${stockMaxFiltro}`);
+        const productos = await response.json();
+        popularTabla(productos.data);
+      }
+    };
+
+  const reiniciarFiltros = () => {
+    const inputNombre = document.getElementById('filtroNombre');
+    const inputCodigo = document.getElementById('filtroCodigo');
+    const inputPrecioMin = document.getElementById('filtroPrecioMin');
+    const inputPrecioMax = document.getElementById('filtroPrecioMax');
+    const inputStockMin = document.getElementById('filtroStockMin');
+    const inputStockMax = document.getElementById('filtroStockMax');
+    reiniciarValue(inputNombre);
+    reiniciarValue(inputCodigo);
+    reiniciarValue(inputPrecioMin);
+    reiniciarValue(inputPrecioMax);
+    reiniciarValue(inputStockMin);
+    reiniciarValue(inputStockMax);
+  }
+
+  const reiniciarTabla = () => {
+    limpiarTabla();
+    inicializarTabla();
+  }
+
+  const reiniciarValue = el => {
+    el.value = '';
+  }
+
+  const createNode = (element) => {
+    return document.createElement(element);
+  }
+
+  const append = (parent, el) => {
+    return parent.appendChild(el);
+  }
+
+  const addToCart = async (id, nombre) => {
+    alert("Agregado al carrito: " + nombre);
+    await agregarAlCarrito(id);
+  }
+
+  const agregarAlCarrito = async id => {
+    const urlAgregarAlCarrito = 'carrito/agregar/';
+    const url = `${urlAgregarAlCarrito}${id}`;
+    const data = {
+      id_carrito: carritoId
+    };
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    const responseJson = await response.json();
+  }
+
+  const limpiarTabla = () => {
+    const tabla = document.getElementById('productosCarrito');
+    tabla.innerHTML = '';
+  };
+
+  const popularTabla = (productos) => {
+    //Obtener lista a popular
+    console.log(productos);
+    const table = document.getElementById('productosCarrito');
+    if(productos?.length > 0) {
+      return productos.map(function (producto) {
+        let tr = createNode('tr');
+        let tdNombre = createNode('td');
+        let pNombre = createNode('p');
+        pNombre.innerHTML = producto.nombre;
+        pNombre.classList.add('mr-2');
+        append(tdNombre, pNombre);
+        let tdPrecio = createNode('td');
+        let pPrecio = createNode('p');
+        pPrecio.innerHTML = `$${producto.precio}`;
+        pPrecio.classList.add('mr-2');
+        append(tdPrecio, pPrecio);
+        let tdDescripcion = createNode('td');
+        let pDescripcion = createNode('p');
+        pDescripcion.innerHTML = producto.descripcion;
+        append(tdDescripcion, pDescripcion);
+        let tdImagen = createNode('td');
+        let img = createNode('img');
+        img.src = producto.fotoUrl;
+        img.height = '75';
+        img.width = '75';
+        append(tdImagen, img);
+        let tdStock = createNode('td');
+        let pStock = createNode('p');
+        pStock.innerHTML = producto.stock;
+        append(tdStock, pStock);
+        let tdButton = createNode('td');
+        let button = createNode('button');
+        button.classList.add('btn');
+        button.classList.add('btn-danger');
+        button.innerHTML = 'Agregar al carrito';
+        button.onclick = () => addToCart(producto._id, producto.nombre);
+        append(tdButton, button);
+        append(tr, tdNombre);
+        append(tr, tdPrecio);
+        append(tr, tdDescripcion);
+        append(tr, tdImagen);
+        append(tr, tdStock);
+        append(tr, tdButton);
+        append(table, tr);
+      })
+    }else{
+      alert('No hay productos');
+    }
+  }
+  const obtenerListaProductos = async () => {
+    //Ruta para consultar
+    const urlListarProductos = 'productos/listar';
+    const response = await fetch(`${urlListarProductos}`);
+    const productos = await response.json();
+    return productos.data;
+  }
+
+  const inicializarTabla = async () => {
+    const productos = await obtenerListaProductos();
+
+    await popularTabla(productos);
+  }
+
+  inicializarTabla();
+
 </script>
