@@ -17,12 +17,13 @@ passport.use('signup', new LocalStrategy({
     return done(null, false);
   } else {
     //Crear usuario
-    const {nombre,telefono} = req.body;
+    const {nombre,telefono,foto} = req.body;
     const payload = {
       email,
       password : userAPI.encriptarContrasena(password),
       nombre,
-      telefono
+      telefono,
+      foto
     }
     const usuario = await userAPI.crearUsuario(payload);
     const usuarioCreado = await userAPI.obtenerUsuario(usuario.email);

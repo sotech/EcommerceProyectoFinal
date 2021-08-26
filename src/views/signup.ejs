@@ -25,6 +25,11 @@
         <small hidden id="emailHelp" class="form-text text-muted">Ingrese un email</small>
       </div>
       <div class="form-group mt-2 mb-2">
+        <label for="email">Foto</label>
+        <input class="form-control" type="text" name="foto" id="foto" placeholder="Foto">
+        <small hidden id="fotoHelp" class="form-text text-muted">Ingrese el link a su foto</small>
+      </div>
+      <div class="form-group mt-2 mb-2">
         <label for="password">Contraseña</label>
         <input class="form-control" type="password" name="password" id="password" placeholder="Contraseña">
       </div>
@@ -43,10 +48,12 @@
   const nombreInput = document.getElementById('nombre');
   const telefonoInput = document.getElementById('telefono');
   const emailInput = document.getElementById('email');
+  const fotoInput = document.getElementById('foto');
   const nombreHelp = document.getElementById('nombreHelp');
   const emailHelp = document.getElementById('emailHelp');
   const telefonoHelp = document.getElementById('telefonoHelp');
   const passwordHelp = document.getElementById('passwordHelp');
+  const fotoHelp = document.getElementById('fotoHelp');
 
   const validatePwd = () => {
     const pw1value = passwordInput.value;
@@ -61,6 +68,8 @@
     emailHelp.hidden = emailHasValue;
     const telefonoHasValue = telefonoInput.value != '';
     telefonoHelp.hidden = telefonoHasValue;
+    const fotoHasValue = fotoInput.value != '';
+    fotoHelp.hidden = fotoHasValue;
     passwordHelp.hidden = validatePwd();
     return nameHasValue && emailHasValue && validatePwd();
   }

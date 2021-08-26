@@ -4,6 +4,7 @@ const userSchema = mongoose.Schema({
   password:String,
   telefono:String,
   nombre:String,
+  foto:String,
   carrito: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Carrito'
