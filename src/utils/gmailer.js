@@ -11,7 +11,7 @@ const gmailTransporter = nodemailer.createTransport({
 })
 const newUserOptions = {
   from: 'Servidor Node.js',
-  to: 'germansommariva@gmail.com',
+  to: process.env.MAIL_ADMIN,
   subject: 'Nuevo registro',
   html:'<h3>Se ha registrado un nuevo usuario</h3>'
 }
