@@ -14,13 +14,15 @@ exports.obtenerUsuarioPorId = async id => {
 }
 
 exports.crearUsuario = async payload => {
-  const { email, password, nombre, telefono } = payload;
+  console.log(payload);
+  const { email, password, nombre, telefono, foto } = payload;
   const carrito = await carritoAPI.crearCarrito();
   const usuarioData = {
     email,
     password,
     nombre,
     telefono,
+    foto,
     carrito
   };
   const nuevoUser = await User.create(usuarioData);
