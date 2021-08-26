@@ -2,3 +2,5 @@ node_modules/
 src/dbs/
 logs/
 .env
+src/config/development.env
+src/config/production.env
