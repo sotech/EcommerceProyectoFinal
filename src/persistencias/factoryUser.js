@@ -6,7 +6,7 @@ class Factory {
     //Obtener persistencia
     switch (persistencia) {
       case 'MONGODB':
-        return await require('./mongodb_carrito');
+        return await require('./mongodb_usuario');
       default:
         return null;
     }
