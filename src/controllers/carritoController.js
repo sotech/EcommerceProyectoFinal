@@ -1,4 +1,6 @@
 const carritoAPI = require('../api/carritoAPI')
+const mailer = require('../utils/gmailer');
+const twilio = require('../utils/twilio');
 
 exports.listarCarrito = async (req, res) => {
   try {
@@ -20,6 +22,19 @@ exports.crearCarrito = async (req,res) => {
   }
 }
 
+exports.comprar = async(req,res)=>{
+  const{id} = req.params;
+  const{nombre,email,telefono} = req.body;
+  try{
+    const resultado = await carritoAPI.comprar(id);
+    mailer.pedidoCarritoMail(nombre,email,resultado.items);
+    twilio.enviarWppPedido(nombre,email);
+    twilio.enviarSMSPedidoRecibido(telefono);
+    res.status(200).json({comprado:resultado});
+  }catch(e){
+    res.status(400).json({error:e});
+  }
+}
 exports.agregarProducto = async (req,res) => {
   const {id_producto} = req.params;
   const {id_carrito} = req.body;

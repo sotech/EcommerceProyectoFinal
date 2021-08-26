@@ -35,14 +35,18 @@ const pedidoCarritoMail = (nombre,email,listaProductos) => {
   pedidoCarritoOptions.subject = `Nuevo pedido de ${nombre} - ${email}`;
   pedidoCarritoOptions.html = `<h3>Productos:</h3><ul>`;
   listaProductos.map((p) => {
-    pedidoCarritoOptions.html = pedidoCarritoOptions.html + `<li>${p.nombre}</li>`
+    pedidoCarritoOptions.html += pedidoCarritoOptions.html + `<li>Nombre:${p._id.nombre} 
+    Cantidad: ${p.cantidad} 
+    Precio: ${p._id.precio} 
+    Descripcion: ${p._id.descripcion}
+    </li>`
   });
   pedidoCarritoOptions.html = pedidoCarritoOptions.html + `</ul>`;  
-  gmailTransporter.sendMail(pedidoCarritoOptions, (err, info) => {
+  gmailTransporter.sendMail(pedidoCarritoOptions, (err, infom) => {
     if (err) {
       errors.error(err);
     }
-    info.info(info);
+    info.info(infom);
   })
 }
 module.exports = {newUserMail,pedidoCarritoMail};

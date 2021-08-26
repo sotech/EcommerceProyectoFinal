@@ -40,7 +40,16 @@ exports.crearCarrito = async() => {
   const carrito = new Carrito({});
   carrito.timestamp = new Date();
   return await carrito.save();
-}
+};
+
+exports.comprar = async(id) => {
+  //Por ahora solo devolver el carrito con los productos
+  const carrito = await Carrito.findById(id).populate({
+    path: 'items._id',
+    model: 'Producto'
+  });
+  return carrito;
+};
 
 exports.borrarProducto = async(id)=>{
   const carrito = await Carrito.findOne({});

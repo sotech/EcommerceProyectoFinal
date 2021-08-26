@@ -26,6 +26,7 @@
 
       </tbody>
     </table>
+    <button class="btn btn-danger m-3" onclick=realizarCompra()>Realizar compra</button>
     <div>
       <a href='/productos'><button class="btn btn-primary">Productos</button></a>
       <a href='./home'><button class="btn btn-primary">Home</button></a>
@@ -49,6 +50,24 @@
     });
     alert("Producto removido");
     window.location.reload();
+  }
+
+  const realizarCompra = async() =>{
+    const urlCompra = 'carrito/comprar';
+    const carritoId = '<%- (user.carrito) %>';
+    const data = {
+      nombre: '<%- (user.nombre) %>',
+      email: '<%- (user.email) %>',
+      telefono: '<%- (user.telefono) %>'
+    }
+    const response = await fetch(`${urlCompra}/${carritoId}`,{
+      method:'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    });
+    alert("Compra realizada");
   }
 
   const popularCarrito = async() => {

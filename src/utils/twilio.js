@@ -1,9 +1,9 @@
 require('dotenv').config();
 const client = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
 const info = require('log4js').getLogger();
-const errors = require('log4js').getLogger('errors');
 
-const enviarWpp = (mensaje) => {
+const enviarWppPedido = (nombre,email) => {
+  const mensaje = `Nuevo pedido de ${nombre} - ${email}`;
   client.messages.create({
     body: mensaje,
     from: 'whatsapp:+14155238886',
@@ -22,4 +22,4 @@ const enviarSMSPedidoRecibido = (telefono) => {
     .then(msj => info.info("Mensaje enviado",msj.sid))
     .catch(console.log())
 }
-module.exports = {enviarWpp,enviarSMSPedidoRecibido};
+module.exports = { enviarWppPedido,enviarSMSPedidoRecibido};
