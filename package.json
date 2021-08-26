@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js",
-    "start": "node server.js"
+    "dev": "set NODE_ENV=development&& nodemon server.js",
+    "prod": "set NODE_ENV=production&& node server.js"
   },
   "author": "German Sommariva",
   "license": "ISC",

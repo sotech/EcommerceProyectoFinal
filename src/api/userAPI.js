@@ -1,30 +1,20 @@
-require('../utils/mongoConnection');
-const User = require("../models/userModel");
-const carritoAPI = require("./carritoAPI");
+const Singleton = require('../persistencias/singletonUser');
+const baseDeDatos = Singleton.getInstancia().dao;
 const bcrypt = require('bcrypt-nodejs');
 
 exports.obtenerUsuario = async email => {
-  const user = await User.find({'email':email});
-  return user[0];
+  const user = await baseDeDatos.obtenerUsuario(email);
+  return user;
 }
 
 exports.obtenerUsuarioPorId = async id => {
-  const user = await User.findById(id);
+  const user = await baseDeDatos.obtenerUsuarioPorId(id);
   return user;
 }
 
 exports.crearUsuario = async payload => {
-  const { email, password, nombre, telefono } = payload;
-  const carrito = await carritoAPI.crearCarrito();
-  const usuarioData = {
-    email,
-    password,
-    nombre,
-    telefono,
-    carrito
-  };
-  const nuevoUser = await User.create(usuarioData);
-  return nuevoUser
+  const usuario = await baseDeDatos.crearUsuario(payload);
+  return usuario;
 }
 
 exports.encriptarContrasena = (password) => {

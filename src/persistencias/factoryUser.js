@@ -1,5 +1,5 @@
 //Env
-const carritoPersistencia = process.env.PERSISTENCIA_CARRITO;
+const userPersistencia = process.env.PERSISTENCIA_USUARIO;
 
 //Persistencias
 
@@ -7,9 +7,9 @@ const carritoPersistencia = process.env.PERSISTENCIA_CARRITO;
 class Factory {
   async obtenerPersistencia() {
     //Obtener persistencia
-    switch (carritoPersistencia) {
+    switch (userPersistencia) {
       case 'MONGODB':
-        return await require('./mongodb_carrito');
+        return await require('./mongodb_usuario');
       default:
         return null;
     }

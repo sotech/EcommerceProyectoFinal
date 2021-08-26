@@ -1,5 +1,5 @@
-require('dotenv').config();
 require('./src/utils/logger');
+require('./src/config/config');
 const express = require('express');
 const app = express();
 const path = require('path');
