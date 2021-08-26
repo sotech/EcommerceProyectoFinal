@@ -1,7 +1,10 @@
 const Singleton = require('../persistencias/singletonUser');
-const baseDeDatos = Singleton.getInstancia().dao;
-const bcrypt = require('bcrypt-nodejs');
+let baseDeDatos = null;
+(async () => {
+   baseDeDatos = await Singleton.getInstancia().dao;
+})();
 
+const bcrypt = require('bcrypt-nodejs');
 exports.obtenerUsuario = async email => {
   const user = await baseDeDatos.obtenerUsuario(email);
   return user;

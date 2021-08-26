@@ -1,6 +1,8 @@
 const Singleton = require('../persistencias/singletonProductos');
-const baseDeDatos = Singleton.getInstancia().dao;
-
+let baseDeDatos = null;
+(async () => {
+  baseDeDatos = await Singleton.getInstancia().dao;
+})();
 exports.obtenerProductoPorId = async id => {
   const producto = await baseDeDatos.obtenerProductoPorId(id);
   return producto;

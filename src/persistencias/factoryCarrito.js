@@ -1,13 +1,10 @@
 //Env
-const carritoPersistencia = process.env.PERSISTENCIA_CARRITO;
-
-//Persistencias
-
+const persistencia = process.env.PERSISTENCIA;
 
 class Factory {
   async obtenerPersistencia() {
     //Obtener persistencia
-    switch (carritoPersistencia) {
+    switch (persistencia) {
       case 'MONGODB':
         return await require('./mongodb_carrito');
       default:

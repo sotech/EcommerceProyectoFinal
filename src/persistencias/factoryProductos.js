@@ -1,10 +1,10 @@
 //Env
-const productosPersistencia = process.env.PERSISTENCIA_PRODUCTOS;
+const persistencia = process.env.PERSISTENCIA;
 
 class Factory{
   async obtenerPersistencia(){
     //Obtener persistencia
-    switch(productosPersistencia){
+    switch (persistencia){
       case 'MONGODB':
         return await require('./mongodb_productos');
       default:

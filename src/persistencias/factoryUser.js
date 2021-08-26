@@ -1,13 +1,10 @@
 //Env
-const userPersistencia = process.env.PERSISTENCIA_USUARIO;
-
-//Persistencias
-
+const persistencia = process.env.PERSISTENCIA;
 
 class Factory {
   async obtenerPersistencia() {
     //Obtener persistencia
-    switch (userPersistencia) {
+    switch (persistencia) {
       case 'MONGODB':
         return await require('./mongodb_usuario');
       default:
