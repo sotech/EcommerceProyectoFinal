@@ -1,69 +1,36 @@
-require('../utils/mongoConnection');
-const Carrito = require("../models/carritoModel");
-const productoAPI = require('./productoAPI');
+const Singleton = require('../persistencias/singletonCarrito');
+const baseDeDatos = Singleton.getInstancia().dao;
 
-exports.obtenerProductoPorId = async (id) =>{
-  const carritoPopulado = await Carrito.findOne().populate({
-    path: 'items._id',
-    model: 'Producto'
-  });
-  const producto = carritoPopulado.items.filter(p => p._id._id == id);
-  console.log(producto);
-  return producto[0];
+exports.obtenerProductoPorId = async (id) => {
+  const producto = await baseDeDatos.obtenerProductoPorId(id);
+  return producto
 }
 
-exports.obtenerCarrito = async(id) => {
-  const carrito = await Carrito.findById(id).populate({
-    path:'items._id',
-    model:'Producto'
-  });
+exports.obtenerCarrito = async (id) => {
+  const carrito = await baseDeDatos.obtenerCarrito(id);
   return carrito;
 }
 
-exports.agregarProducto = async(id_carrito,id_producto) => {
-  const producto = await productoAPI.obtenerProductoPorId(id_producto);
-  const carrito = await Carrito.findById(id_carrito);
-  let existe = false;
-  carrito.items.map(item => {
-    if (JSON.stringify(item._id) == JSON.stringify(producto._id)) {
-      item.cantidad++;
-      existe = true;
-    }
-  })
-  if(!existe){
-    carrito.items.push(producto._id);
-  } 
-  return await carrito.save();
+exports.agregarProducto = async (id_carrito, id_producto) => {
+  const resultado = await baseDeDatos.agregarProducto(id_carrito,id_producto);
+  return resultado;
 }
 
-exports.crearCarrito = async() => {
-  const carrito = new Carrito({});
-  carrito.timestamp = new Date();
-  return await carrito.save();
+exports.crearCarrito = async () => {
+  const resultado = await baseDeDatos.crearCarrito();
+  return resultado;
 };
 
-exports.comprar = async(id) => {
-  //Por ahora solo devolver el carrito con los productos
-  const carrito = await Carrito.findById(id).populate({
-    path: 'items._id',
-    model: 'Producto'
-  });
-  return carrito;
+exports.comprar = async (id) => {
+  const carrito = await baseDeDatos.comprar(id);
+  return carrito
 };
 
-exports.borrarProducto = async(id)=>{
-  const carrito = await Carrito.findOne({});
-  //Buscar item
-  carrito.items.map(item => {
-    if (JSON.stringify(item._id) == JSON.stringify(id)){
-      item.cantidad--;
-    }
-  })
-  //Quitar
-  carrito.items = carrito.items.filter(item => item.cantidad > 0);
-  return await carrito.save();
+exports.borrarProducto = async (id) => {
+  const resultado = await baseDeDatos.borrarProducto(id);
+  return resultado;
 }
 
-exports.borrarCarrito = async(id) =>{
-  return await Carrito.findByIdAndDelete(id);
+exports.borrarCarrito = async (id) => {
+  return await baseDeDatos.borrarCarrito(id);
 }
