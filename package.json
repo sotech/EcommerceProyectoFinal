@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "set NODE_ENV=development&& nodemon server.js",
     "prod": "set NODE_ENV=production&& node server.js",
-    "start": "set NODE_ENV=production&& node server.js",
+    "start": "set NODE_ENV=production&& node server.js"
   },
   "author": "German Sommariva",
   "license": "ISC",

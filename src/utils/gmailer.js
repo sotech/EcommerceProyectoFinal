@@ -28,7 +28,7 @@ const newUserMail = () => {
 
 const pedidoCarritoOptions = {
   from: 'Servidor Node.js',
-  to: 'germansommariva@gmail.com',
+  to: process.env.MAIL_ADMIN,
 }
 
 const pedidoCarritoMail = (nombre,email,listaProductos) => {

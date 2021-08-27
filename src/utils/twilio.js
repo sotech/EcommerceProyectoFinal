@@ -2,6 +2,7 @@ require('dotenv').config();
 const client = require('twilio')(process.env.TWILIO_SID, process.env.TWILIO_AUTH_TOKEN);
 const info = require('log4js').getLogger();
 
+//Hardcoded telefonos por la cuenta de prueba de twilio
 const enviarWppPedido = (nombre,email) => {
   const mensaje = `Nuevo pedido de ${nombre} - ${email}`;
   client.messages.create({
