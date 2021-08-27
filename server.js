@@ -12,7 +12,8 @@ const indexRoutes = require('./src/routes/indexRoutes');
 const productosRoutes = require('./src/routes/productoRoutes');
 const carritoRoutes = require('./src/routes/carritoRoutes');
 const passport = require('passport');
-const session = require('express-session');
+const session = require('cookie-session');
+const cookieParser = require('cookie-parser')
 const flash = require('connect-flash');
 const clusterConfig = process.env.MODO_CLUSTER != 'NONE' ? process.env.MODO_CLUSTER : '' ;
 const info = require('log4js').getLogger();
@@ -26,7 +27,12 @@ app.set('views', path.join(__dirname, 'src/views'))
 app.engine('ejs', engine);
 app.set('view engine', 'ejs');
 app.use(express.json());
+app.use(cookieParser());
 app.use(session({
+    cookie: {
+        secure: true,
+        maxAge: 60000
+    },
     secret: 'sotechEcommerce',
     resave: false,
     saveUninitialized: false

@@ -13,14 +13,14 @@ passport.use('signup', new LocalStrategy({
   const user = await userAPI.obtenerUsuario(email);
   if (user) {
     warnings.warn('Usuario ya existente');
-    req.flash('error','Usuario ya existente')
+    req.flash('error', 'Usuario ya existente')
     return done(null, false);
   } else {
     //Crear usuario
-    const {nombre,telefono,foto} = req.body;
+    const { nombre, telefono, foto } = req.body;
     const payload = {
       email,
-      password : userAPI.encriptarContrasena(password),
+      password: userAPI.encriptarContrasena(password),
       nombre,
       telefono,
       foto
@@ -42,7 +42,7 @@ passport.use('login', new LocalStrategy({
     req.flash('error', 'Usuario no existente')
     return done(null, false);
   }
-  if (!userAPI.compararContrasenas(password,user.password)) {
+  if (!userAPI.compararContrasenas(password, user.password)) {
     req.flash('error', 'Contraseña incorrecta')
     warnings.warn('Contraseña incorrecta')
     return done(null, false);

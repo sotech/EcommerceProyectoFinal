@@ -7,7 +7,6 @@ exports.obtenerProductoPorId = async (id) => {
     model: 'Producto'
   });
   const producto = carritoPopulado.items.filter(p => p._id._id == id);
-  console.log(producto);
   return producto[0];
 }
 
