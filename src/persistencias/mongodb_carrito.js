@@ -1,5 +1,6 @@
 require('../utils/mongoConnection');
 const Carrito = require("../models/carritoModel");
+const productoAPI = require("../api/productoAPI");
 
 exports.obtenerProductoPorId = async (id) => {
   const carritoPopulado = await Carrito.findOne().populate({
