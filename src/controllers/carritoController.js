@@ -47,9 +47,10 @@ exports.agregarProducto = async (req,res) => {
 }
 
 exports.borrarProducto = async (req,res) => {
-  const {id} = req.params;
+  const { id_producto } = req.params;
+  const { id_carrito } = req.body;
   try{
-    const resultado = await carritoAPI.borrarProducto(id);
+    const resultado = await carritoAPI.borrarProducto(id_carrito, id_producto);
     res.status(200).json({status:resultado});
   }catch(e){
     res.status(500).json({error:e})

@@ -28,8 +28,8 @@ exports.comprar = async (id) => {
   return carrito
 };
 
-exports.borrarProducto = async (id) => {
-  const resultado = await baseDeDatos.borrarProducto(id);
+exports.borrarProducto = async (id_carrito,id_producto) => {
+  const resultado = await baseDeDatos.borrarProducto(id_carrito, id_producto);
   return resultado;
 }
 

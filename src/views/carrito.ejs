@@ -43,10 +43,19 @@
     return parent.appendChild(el);
   }
 
+  const carritoId = '<%- (user.carrito) %>';
+
   const quitarProducto = async(id) => {
-    const carritoBorrar = 'carrito/borrar/'
+    const carritoBorrar = 'carrito/borrar/';
+    const data = {
+      id_carrito: carritoId
+    };
     const response = await fetch(`${carritoBorrar}${id}`,{
-      method:'DELETE'
+      method:'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
     });
     alert("Producto removido");
     window.location.reload();

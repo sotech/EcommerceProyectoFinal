@@ -50,11 +50,11 @@ exports.comprar = async (id) => {
   return carrito;
 };
 
-exports.borrarProducto = async (id) => {
-  const carrito = await Carrito.findOne({});
+exports.borrarProducto = async (id_carrito, id_producto) => {
+  const carrito = await Carrito.findById(id_carrito);
   //Buscar item
   carrito.items.map(item => {
-    if (JSON.stringify(item._id) == JSON.stringify(id)) {
+    if (JSON.stringify(item._id) == JSON.stringify(id_producto)) {
       item.cantidad--;
     }
   })
