@@ -55,10 +55,11 @@ exports.borrarProducto = async (id_carrito, id_producto) => {
   //Buscar item
   carrito.items.map(item => {
     if (JSON.stringify(item._id) == JSON.stringify(id_producto)) {
+      //Al hayar el item, disminuir la cantidad en 1
       item.cantidad--;
     }
   })
-  //Quitar
+  //Quitar los items cuya cantidad sea 0 o menor
   carrito.items = carrito.items.filter(item => item.cantidad > 0);
   return await carrito.save();
 }

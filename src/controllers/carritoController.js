@@ -27,8 +27,11 @@ exports.comprar = async(req,res)=>{
   const{nombre,email,telefono} = req.body;
   try{
     const resultado = await carritoAPI.comprar(id);
+    //Al realizar la compra, enviar mail
     mailer.pedidoCarritoMail(nombre,email,resultado.items);
+    //Al realizar la compra, enviar WPP
     twilio.enviarWppPedido(nombre,email);
+    //Al realizar la compra, enviar SMS
     twilio.enviarSMSPedidoRecibido(telefono);
     res.status(200).json({comprado:resultado});
   }catch(e){
